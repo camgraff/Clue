@@ -84,6 +84,7 @@ class IntBoardTests {
 		assertTrue(targets.contains(board.getCell(0, 2)));
 		assertTrue(targets.contains(board.getCell(1, 1)));
 		assertTrue(targets.contains(board.getCell(2, 0)));
+		
 	}
 	
 	@Test
@@ -98,7 +99,9 @@ class IntBoardTests {
 		assertTrue(targets.contains(board.getCell(0, 1)));
 		assertTrue(targets.contains(board.getCell(1, 2)));
 		assertTrue(targets.contains(board.getCell(0, 3)));
-		assertTrue(targets.contains(board.getCell(1, 0)));
+		assertTrue(targets.contains(board.getCell(1, 0)));		
+		
+
 	}
 	
 	@Test

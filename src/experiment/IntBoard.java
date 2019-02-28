@@ -14,11 +14,11 @@ public class IntBoard {
 	private void findAllTargets(BoardCell thisCell, int numSteps) {
 		for (BoardCell cell : adjMtx.get(thisCell)) {
 			if (visited.contains(cell)) {
-				break;
+				continue;
 			}
 			visited.add(cell);
 			if (numSteps == 1) {
-				targets.add(cell);
+				targets.add(grid[cell.getRow()][cell.getColumn()]);
 			} else {
 				findAllTargets(cell, numSteps - 1);
 			}
