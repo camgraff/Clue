@@ -11,12 +11,9 @@ import experiment.BoardCell;
 import experiment.IntBoard;
 
 class IntBoardTests {
-	private IntBoard board;
+	private IntBoard board = new IntBoard();
 	
-	@Before
-	public void init() {
-		board = new IntBoard();
-	}
+	
 	
 	@Test
 	public void testAdjacency0() {
