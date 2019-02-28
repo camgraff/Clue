@@ -1,3 +1,6 @@
+//@authors: Cameron Graff
+//@author: James Mach
+
 package experiment;
 
 import java.util.HashMap;

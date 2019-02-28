@@ -1,3 +1,6 @@
+//@authors: Cameron Graff
+//@author: James Mach
+
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
