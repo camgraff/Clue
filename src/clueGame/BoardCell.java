@@ -22,19 +22,25 @@ public class BoardCell {
 	}
 	
 	public boolean isWalkway() {
-		
+		return true;
 	}
 	
 	public boolean isRoom() {
-		
+		return true;
+
 	}
 	
 	public boolean isDoorway() {
-		
+		return true;
+
 	}
 
 	public DoorDirection getDoorDirection() {
 		return DoorDirection.UP;
+	}
+
+	public char getInitial() {
+		return 0;
 	}
 	
 	

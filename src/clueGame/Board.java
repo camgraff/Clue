@@ -1,4 +1,5 @@
 package clueGame;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 public class Board {
@@ -47,18 +48,18 @@ public class Board {
 	}
 
 	public Map<Character, String> getLegend() {
-		return legend;
+		return new HashMap<Character, String>();
 	}
 
 	public int getNumRows() {
-		return numRows;
+		return 0;
 	}
 	
-	public int getNumCols() {
-		return numColumns;
+	public int getNumColumns() {
+		return 0;
 	}
 
 	public BoardCell getCellAt(int row, int col) {
-		return board[row][col];
+		return new BoardCell(-1, -1);
 	}
 }

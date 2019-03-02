@@ -8,9 +8,10 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
 
+import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.DoorDirection;
 
 public class OurInitTests {
 	public static final int LEGEND_SIZE = 11;
