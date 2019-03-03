@@ -9,12 +9,12 @@ public class BadConfigFormatException extends Exception {
 		super("Error: Invalid Config file");
 	}
 	
-	public BadConfigFormatException(String invalidCell) {
-		super("Error: Invalid Cell \""+invalidCell+"\"");
+	public BadConfigFormatException(String message) {
+		super(message);
 		
 		try {
 			PrintWriter writer = new PrintWriter("logfile.txt");
-			writer.println("Error: Invalid Cell \""+invalidCell+"\"");
+			writer.println(message);
 			writer.flush();
 			writer.close();
 		} catch (FileNotFoundException e) {

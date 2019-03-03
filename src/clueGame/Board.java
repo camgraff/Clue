@@ -46,7 +46,7 @@ public class Board {
 	}
 	
 	//sets up board with row, column, initial of each room
-	public void loadRoomConfig() throws IOException {
+	public void loadRoomConfig() throws IOException, BadConfigFormatException {
 		InputStream in = new FileInputStream(roomConfigFile);
 		in.mark(0);
 		Scanner sc = new Scanner(in);
@@ -79,6 +79,9 @@ public class Board {
 					board[row][col].setDoorDirection(DoorDirection.DOWN);
 				} else if (c == 'N') {
 					continue;
+				} else {
+					reader.close();
+					throw new BadConfigFormatException(""+c);				
 				}
 
 			}
@@ -87,7 +90,7 @@ public class Board {
 	}
 
 	//sets up legend with initial, name of each room
-	public void loadBoardConfig() throws IOException {
+	public void loadBoardConfig() throws IOException, BadConfigFormatException {
 		legend = new HashMap<Character, String>();
 		FileReader reader = new FileReader(boardConfigFile);
 		Scanner in = new Scanner(reader);
