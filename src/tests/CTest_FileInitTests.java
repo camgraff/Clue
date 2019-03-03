@@ -14,8 +14,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
-
 import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.DoorDirection;

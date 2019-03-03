@@ -42,6 +42,7 @@ public class OurInitTests {
 		assertEquals("Walkway", legend.get('W'));
 		assertEquals("Bowling Alley", legend.get('A'));
 		assertEquals("Server Room", legend.get('V'));
+		assertEquals("Studio", legend.get('S'));
 	}
 	
 	@Test
