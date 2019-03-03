@@ -25,7 +25,7 @@ public class OurInitTests {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		board.setConfigFiles("Rooms.csv", "CTest_ClueLegend.txt");		
+		board.setConfigFiles("Rooms.csv", "legend.txt");		
 		// Initialize will load BOTH config files 
 		board.initialize();
 	}
@@ -38,7 +38,7 @@ public class OurInitTests {
 		assertEquals("Office", legend.get('O'));
 		assertEquals("Ballroom", legend.get('B'));
 		assertEquals("Library", legend.get('L'));
-		assertEquals("Dining room", legend.get('D'));
+		assertEquals("Dining Room", legend.get('D'));
 		assertEquals("Walkway", legend.get('W'));
 		assertEquals("Bowling Alley", legend.get('A'));
 		assertEquals("Server Room", legend.get('V'));
@@ -95,7 +95,7 @@ public class OurInitTests {
 		// Test first cell in room
 		assertEquals('O', board.getCellAt(0, 0).getInitial());
 		assertEquals('L', board.getCellAt(4, 8).getInitial());
-		assertEquals('B', board.getCellAt(17, 3).getInitial());
+		assertEquals('B', board.getCellAt(3, 17).getInitial());
 		// Test last cell in room
 		assertEquals('S', board.getCellAt(21, 22).getInitial());
 		assertEquals('V', board.getCellAt(1, 22).getInitial());

@@ -6,11 +6,13 @@ public class BoardCell {
 	private int row;
 	private int column;
 	private char initial;
+	private DoorDirection doorDirection;
 	
-	public BoardCell(int row, int column) {
+	public BoardCell(int row, int column, char initial) {
 		super();
 		this.row = row;
 		this.column = column;
+		this.initial = initial;
 	}
 
 	public int getRow() {
@@ -22,26 +24,38 @@ public class BoardCell {
 	}
 	
 	public boolean isWalkway() {
-		return true;
+		if (initial == 'W') {
+			return true;
+		} else return false;
 	}
 	
 	public boolean isRoom() {
-		return true;
-
+		if (initial != 'W') {
+			return true;
+		} else return false;
 	}
 	
 	public boolean isDoorway() {
-		return true;
+		if (doorDirection == null) {
+			return false;
+		} else {
+			return true;
+		}
 
 	}
 
 	public DoorDirection getDoorDirection() {
-		return DoorDirection.UP;
+		return doorDirection;
 	}
 
 	public char getInitial() {
-		return 0;
+		return initial;
 	}
+	
+	public void setDoorDirection(DoorDirection d) {
+		doorDirection = d;
+	}
+	
 	
 	
 	
