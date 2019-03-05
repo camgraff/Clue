@@ -3,7 +3,7 @@ package clueGame;
 public class BadConfigFormatException extends Exception {
 	
 	public BadConfigFormatException() {
-		System.out.println("00000");
+		System.out.println("Error: There is a problem with the configuration files");
 		return;
 	}
 	
