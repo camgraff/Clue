@@ -1,0 +1,11 @@
+O, Office, Card
+K, Kitchen, Card
+L, Library, Card
+B, Ballroom, Card
+D, Dining Room, Card
+A, Bowling Alley, Card
+P, Swimming Pool, Card
+S, Studio, Card
+V, Server Room, Card
+X, Closet, Other
+W, Walkway, Other
