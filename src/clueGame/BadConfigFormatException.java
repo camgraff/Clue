@@ -5,4 +5,8 @@ public class BadConfigFormatException extends Exception {
 	public BadConfigFormatException() {
 		super();
 	}
+	
+	public BadConfigFormatException(String s) {
+		
+	}
 }

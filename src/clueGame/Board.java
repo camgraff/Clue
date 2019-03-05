@@ -36,7 +36,7 @@ public class Board {
 			loadBoardConfig();
 			loadRoomConfig();
 		} catch (Exception FileIOException) {
-			
+
 		}
 	}
 
@@ -44,11 +44,10 @@ public class Board {
 		roomConfigFile = room;
 		boardConfigFile = board;
 	}
-	
+
 	//sets up board with row, column, initial of each room
-	public void loadRoomConfig() throws IOException {
-		InputStream in = new FileInputStream(roomConfigFile);
-		in.mark(0);
+	public void loadRoomConfig() throws FileNotFoundException {
+		FileReader in = new FileReader(roomConfigFile);
 		Scanner sc = new Scanner(in);
 		for (char c : sc.nextLine().toCharArray()) {
 			if (c == ',') {
@@ -59,16 +58,27 @@ public class Board {
 			numRows++;
 			sc.nextLine();
 		}
-		in = new FileInputStream(roomConfigFile);		
-		Reader reader = new InputStreamReader(in);
+		in = new FileReader(roomConfigFile);
+		Scanner reader = new Scanner(in);
 		for (int row = 0; row < numRows; row++) {
+			String nextRow = reader.nextLine();
+			int i = 0;
 			for (int col = 0; col < numColumns; col++) {
-				char c = (char) reader.read();
-				if (c == ',' || c == '\n' || c =='\r') {
-					c = (char) reader.read();
+				char c = nextRow.charAt(i);
+				i++;
+				if (c == ',') {
+					c = nextRow.charAt(i);
+					i++;
 				}
 				board[row][col] = new BoardCell(row, col, c);
-				c = (char) reader.read();
+				if (i == nextRow.length()) {
+					break;
+				}
+				c = nextRow.charAt(i);
+				i++;
+				if (c == ',') {
+					continue;
+				}
 				if (c == 'R') {
 					board[row][col].setDoorDirection(DoorDirection.RIGHT);
 				}  else if (c == 'L'){
@@ -82,12 +92,11 @@ public class Board {
 				}
 
 			}
-
 		}
 	}
 
 	//sets up legend with initial, name of each room
-	public void loadBoardConfig() throws IOException {
+	public void loadBoardConfig() throws FileNotFoundException {
 		legend = new HashMap<Character, String>();
 		FileReader reader = new FileReader(boardConfigFile);
 		Scanner in = new Scanner(reader);
