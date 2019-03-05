@@ -1,20 +1,14 @@
 package clueGame;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.zip.InflaterInputStream;
 public class Board {
 
-	private int numRows = 1;
-	private int numColumns = 1;
+	private int numRows;
+	private int numColumns;
 	public static final int MAX_BOARD_SIZE= 75;
 	private BoardCell[][] board;
 	private Map< Character, String> legend;
@@ -29,25 +23,28 @@ public class Board {
 	public static Board getInstance() {
 		return theInstance;
 	}
-
+	
+	//loads data files into board
 	public void initialize() {
-		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
-		try {
-			loadBoardConfig();
+		try {			
 			loadRoomConfig();
-		} catch (Exception FileIOException) {
-
+			loadBoardConfig();
+		} catch (FileNotFoundException | BadConfigFormatException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void setConfigFiles(String room, String board) {
+	public void setConfigFiles(String board, String room) {
 		roomConfigFile = room;
 		boardConfigFile = board;
 	}
 
 	//sets up board with row, column, initial of each room
-	public void loadRoomConfig() throws FileNotFoundException {
-		FileReader in = new FileReader(roomConfigFile);
+	public void loadBoardConfig() throws FileNotFoundException, BadConfigFormatException {
+		numRows = 1;
+		numColumns = 1;
+		//calculates number of rows and columns
+		FileReader in = new FileReader(boardConfigFile);
 		Scanner sc = new Scanner(in);
 		for (char c : sc.nextLine().toCharArray()) {
 			if (c == ',') {
@@ -58,7 +55,25 @@ public class Board {
 			numRows++;
 			sc.nextLine();
 		}
-		in = new FileReader(roomConfigFile);
+		
+		//makes sure all rows have the same number of columns, otherwise throws exception
+		in = new FileReader(boardConfigFile);
+		Scanner sameNumCols = new Scanner(in);
+		while(sameNumCols.hasNextLine()) {
+			int cols = 1;
+			for (char c : sameNumCols.nextLine().toCharArray()) {
+				if (c == ',') {
+					cols++;
+				}
+			}
+			if (cols != numColumns) {
+				throw new BadConfigFormatException("badCols");
+			}
+		}
+		
+		//loads cells into board
+		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
+		in = new FileReader(boardConfigFile);
 		Scanner reader = new Scanner(in);
 		for (int row = 0; row < numRows; row++) {
 			String nextRow = reader.nextLine();
@@ -69,6 +84,9 @@ public class Board {
 				if (c == ',') {
 					c = nextRow.charAt(i);
 					i++;
+				}
+				if (!legend.containsKey(c)) {
+					throw new BadConfigFormatException("badRoom");
 				}
 				board[row][col] = new BoardCell(row, col, c);
 				if (i == nextRow.length()) {
@@ -96,19 +114,26 @@ public class Board {
 	}
 
 	//sets up legend with initial, name of each room
-	public void loadBoardConfig() throws FileNotFoundException {
+	public void loadRoomConfig() throws FileNotFoundException, BadConfigFormatException {
 		legend = new HashMap<Character, String>();
-		FileReader reader = new FileReader(boardConfigFile);
+		FileReader reader = new FileReader(roomConfigFile);
 		Scanner in = new Scanner(reader);
 		while(in.hasNextLine()) {
-			char key = in.next().charAt(0);
-			String value = in.next();
-			while (value.charAt(value.length()-1) != ',') {
-				value = value.concat(" " + in.next());
+			String str = in.next();
+			if (str.length() != 2) {
+				throw new BadConfigFormatException("badFormat");
 			}
-			value = value.substring(0, value.length()-1);
-			legend.put(key, value);
-			in.next();
+			char key = str.charAt(0);
+			str = in.next();
+			while (str.charAt(str.length()-1) != ',') {
+				str = str.concat(" " + in.next());
+			}
+			str = str.substring(0, str.length()-1);
+			legend.put(key, str);
+			str = in.next();
+			if (!str.equals("Card") && !str.equals("Other")) {
+				throw new BadConfigFormatException("badFormat");
+			}
 		}
 	}
 
