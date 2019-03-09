@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+
 public class Board {
 
 	private int numRows;
@@ -21,18 +22,20 @@ public class Board {
 	private String boardConfigFile;
 	private String roomConfigFile;
 	private static Board theInstance = new Board();
+	private Set<BoardCell> visited;
 
 	private Board() {}
 
 	public static Board getInstance() {
 		return theInstance;
 	}
-	
+
 	//loads data files into board
 	public void initialize() {
 		try {			
 			loadRoomConfig();
 			loadBoardConfig();
+			calcAdjacencies();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +62,7 @@ public class Board {
 			numRows++;
 			sc.nextLine();
 		}
-		
+
 		//makes sure all rows have the same number of columns, otherwise throws exception
 		in = new FileReader(boardConfigFile);
 		Scanner sameNumCols = new Scanner(in);
@@ -74,7 +77,7 @@ public class Board {
 				throw new BadConfigFormatException("badCols");
 			}
 		}
-		
+
 		//loads cells into board
 		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
 		in = new FileReader(boardConfigFile);
@@ -142,11 +145,69 @@ public class Board {
 	}
 
 	public void calcAdjacencies() {
+		adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
+		for(int r =0; r <numRows; r++) {
+			for(int c =0; c< numColumns; c++) {
+				Set<BoardCell> adjCells = new HashSet<BoardCell>();
+				if(board[r][c].isDoorway()) {
+					if(board[r][c].getDoorDirection() == DoorDirection.LEFT) {
+						adjCells.add(board[r][c-1]);
+					} else if(board[r][c].getDoorDirection() == DoorDirection.RIGHT) {
+						adjCells.add(board[r][c+1]);
+					} else if(board[r][c].getDoorDirection() == DoorDirection.UP) {
+						adjCells.add(board[r-1][c]);
+					} else if(board[r][c].getDoorDirection() == DoorDirection.DOWN) {
+						adjCells.add(board[r+1][c]);
+					}
+				} else if (board[r][c].isWalkway()){
 
+					if(r!=0) {
+						if (board[r-1][c].isWalkway() || ((board[r-1][c].isDoorway()) && board[r-1][c].getDoorDirection() == DoorDirection.DOWN)) {
+							adjCells.add(board[r-1][c]);
+						}
+					}
+					if(r!=numRows-1) {
+						if (board[r+1][c].isWalkway() || (board[r+1][c].isDoorway() && board[r+1][c].getDoorDirection() == DoorDirection.UP)) {
+							adjCells.add(board[r+1][c]);
+						}
+					}
+					if(c!=0) {
+						if (board[r][c-1].isWalkway() || (board[r][c-1].isDoorway() && board[r][c-1].getDoorDirection() == DoorDirection.RIGHT)) {
+							adjCells.add(board[r][c-1]);
+						}
+					}
+					if(c!=numColumns-1) {
+						if (board[r][c+1].isWalkway() || (board[r][c+1].isDoorway() && board[r][c+1].getDoorDirection() == DoorDirection.LEFT)) {
+							adjCells.add(board[r][c+1]);
+						}
+					}
+				}
+
+				adjMatrix.put(board[r][c], adjCells); 
+			}
+		}
+	}
+	
+	private void findAllTargets(BoardCell thisCell, int numSteps) {
+		for (BoardCell cell : adjMatrix.get(thisCell)) {
+			if (visited.contains(cell)) {
+				continue;
+			}
+			visited.add(cell);
+			if ((numSteps == 1) || board[cell.getRow()][cell.getColumn()].isDoorway()) {
+				targets.add(board[cell.getRow()][cell.getColumn()]);
+			} else {
+				findAllTargets(cell, numSteps - 1);
+			}
+			visited.remove(cell);
+		}
 	}
 
 	public void calcTargets(int row, int col, int pathLength) {
-
+		visited = new HashSet<BoardCell>();
+		targets = new HashSet<BoardCell>();
+		visited.add(board[row][col]);
+		findAllTargets(board[row][col], pathLength);
 	}
 
 	public Map<Character, String> getLegend() {
@@ -166,10 +227,10 @@ public class Board {
 	}
 
 	public Set<BoardCell> getAdjList(int row, int col) {
-		return new HashSet<BoardCell>();
+		return adjMatrix.get(board[row][col]);
 	}
 
 	public Set<BoardCell> getTargets() {
-		return new HashSet<BoardCell>();
+		return targets;
 	}
 }
