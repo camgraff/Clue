@@ -1,3 +1,6 @@
+//@author: Cameron Graff
+//@author: James Mach
+
 package clueGame;
 
 public enum DoorDirection {

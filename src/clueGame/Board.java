@@ -1,7 +1,11 @@
+//@author: Cameron Graff
+//@author: James Mach
+
 package clueGame;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -141,7 +145,7 @@ public class Board {
 
 	}
 
-	public void calcTargets(BoardCell cell, int pathLength) {
+	public void calcTargets(int row, int col, int pathLength) {
 
 	}
 
@@ -159,5 +163,13 @@ public class Board {
 
 	public BoardCell getCellAt(int row, int col) {
 		return board[row][col];
+	}
+
+	public Set<BoardCell> getAdjList(int row, int col) {
+		return new HashSet<BoardCell>();
+	}
+
+	public Set<BoardCell> getTargets() {
+		return new HashSet<BoardCell>();
 	}
 }
