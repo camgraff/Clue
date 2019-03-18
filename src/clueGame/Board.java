@@ -101,21 +101,27 @@ public class Board {
 				}
 				c = nextRow.charAt(i);
 				i++;
-				if (c == ',') {
-					continue;
+				
+				switch(c) {
+					case ',' :
+						continue;
+					case 'R' :
+						board[row][col].setDoorDirection(DoorDirection.RIGHT);
+						break;
+					case 'L' :
+						board[row][col].setDoorDirection(DoorDirection.LEFT);
+						break;
+					case 'U' :
+						board[row][col].setDoorDirection(DoorDirection.UP);
+						break;
+					case 'D' :
+						board[row][col].setDoorDirection(DoorDirection.DOWN);
+						break;
+					case 'N' :
+						continue;
+					default:
+						break;
 				}
-				if (c == 'R') {
-					board[row][col].setDoorDirection(DoorDirection.RIGHT);
-				}  else if (c == 'L'){
-					board[row][col].setDoorDirection(DoorDirection.LEFT);
-				} else if (c == 'U'){
-					board[row][col].setDoorDirection(DoorDirection.UP);
-				} else if (c == 'D'){
-					board[row][col].setDoorDirection(DoorDirection.DOWN);
-				} else if (c == 'N') {
-					continue;
-				}
-
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-//@authors: Cameron Graff
+//@author: Cameron Graff
 //@author: James Mach
 
 package tests;
