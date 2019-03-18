@@ -194,8 +194,8 @@ public class Board {
 				continue;
 			}
 			visited.add(cell);
-			if ((numSteps == 1) || board[cell.getRow()][cell.getColumn()].isDoorway()) {
-				targets.add(board[cell.getRow()][cell.getColumn()]);
+			if ((numSteps == 1) || cell.isDoorway()) {
+				targets.add(cell);
 			} else {
 				findAllTargets(cell, numSteps - 1);
 			}
