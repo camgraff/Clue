@@ -156,14 +156,19 @@ public class Board {
 			for(int c =0; c< numColumns; c++) {
 				Set<BoardCell> adjCells = new HashSet<BoardCell>();
 				if(board[r][c].isDoorway()) {
-					if(board[r][c].getDoorDirection() == DoorDirection.LEFT) {
-						adjCells.add(board[r][c-1]);
-					} else if(board[r][c].getDoorDirection() == DoorDirection.RIGHT) {
-						adjCells.add(board[r][c+1]);
-					} else if(board[r][c].getDoorDirection() == DoorDirection.UP) {
-						adjCells.add(board[r-1][c]);
-					} else if(board[r][c].getDoorDirection() == DoorDirection.DOWN) {
-						adjCells.add(board[r+1][c]);
+					switch(board[r][c].getDoorDirection()) {
+						case LEFT :
+							adjCells.add(board[r][c-1]);
+							break;
+						case RIGHT : 
+							adjCells.add(board[r][c+1]);
+							break;
+						case UP :
+							adjCells.add(board[r-1][c]);
+							break;
+						case DOWN :
+							adjCells.add(board[r+1][c]);
+							break;
 					}
 				} else if (board[r][c].isWalkway()){
 
