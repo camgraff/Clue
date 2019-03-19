@@ -133,19 +133,19 @@ public class Board {
 		FileReader reader = new FileReader(roomConfigFile);
 		Scanner in = new Scanner(reader);
 		while(in.hasNextLine()) {
-			String str = in.next();
-			if (str.length() != 2) {
+			String roomName = in.next();
+			if (roomName.length() != 2) {
 				throw new BadConfigFormatException("badFormat");
 			}
-			char key = str.charAt(0);
-			str = in.next();
-			while (str.charAt(str.length()-1) != ',') {
-				str = str.concat(" " + in.next());
+			char key = roomName.charAt(0);
+			roomName = in.next();
+			while (roomName.charAt(roomName.length()-1) != ',') {
+				roomName = roomName.concat(" " + in.next());
 			}
-			str = str.substring(0, str.length()-1);
-			legend.put(key, str);
-			str = in.next();
-			if (!str.equals("Card") && !str.equals("Other")) {
+			roomName = roomName.substring(0, roomName.length()-1);
+			legend.put(key, roomName);
+			roomName = in.next();
+			if (!roomName.equals("Card") && !roomName.equals("Other")) {
 				throw new BadConfigFormatException("badFormat");
 			}
 		}
