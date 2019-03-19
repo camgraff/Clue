@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -21,8 +22,11 @@ public class Board {
 	private Set<BoardCell> targets;
 	private String boardConfigFile;
 	private String roomConfigFile;
+	private String playerConfigFile;
 	private static Board theInstance = new Board();
 	private Set<BoardCell> visited;
+	private Player[] players = new Player[6];
+
 
 	private Board() {}
 
@@ -45,6 +49,14 @@ public class Board {
 	public void setConfigFiles(String board, String room) {
 		roomConfigFile = room;
 		boardConfigFile = board;
+	}
+	
+	public void loadConfigFiles() {
+		
+	}
+	
+	public void loadPlayerConfig() throws FileNotFoundException {
+		
 	}
 
 	//sets up board with row, column, initial of each room
@@ -223,6 +235,18 @@ public class Board {
 		targets = new HashSet<BoardCell>();
 		visited.add(board[row][col]);
 		findAllTargets(board[row][col], pathLength);
+	}
+	
+	public void selectAnswer() {
+		
+	}
+	
+	public Card handleSuggestion() {
+		return null;
+	}
+	
+	public boolean checkAccusation(Solution accustion) {
+		return false;
 	}
 
 	public Map<Character, String> getLegend() {
