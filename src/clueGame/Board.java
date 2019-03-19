@@ -41,6 +41,7 @@ public class Board {
 		}
 	}
 
+	//sets names of config files used to loard board and room configurations
 	public void setConfigFiles(String board, String room) {
 		roomConfigFile = room;
 		boardConfigFile = board;
@@ -200,6 +201,7 @@ public class Board {
 		}
 	}
 	
+	//secondary function used in calcTargets. Finds targets cells that are numSteps away from a cell
 	private void findAllTargets(BoardCell thisCell, int numSteps) {
 		for (BoardCell cell : adjMatrix.get(thisCell)) {
 			if (visited.contains(cell)) {
