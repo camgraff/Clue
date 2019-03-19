@@ -21,5 +21,21 @@ public class Player {
 	Card disproveSuggestion(Solution suggestion) {
 		return null;
 	}
+	
+	public String getName() {
+		return playerName;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
 		
 }

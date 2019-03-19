@@ -1,5 +1,4 @@
-//@author: Cameron Graff
-//@author: James Mach
+//@authors: Cameron Graff and James Mach
 
 package clueGame;
 import java.io.FileNotFoundException;
@@ -114,7 +113,7 @@ public class Board {
 				}
 				c = nextRow.charAt(i);
 				i++;
-				
+				//set door direction
 				switch(c) {
 					case ',' :
 						continue;
