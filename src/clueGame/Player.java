@@ -37,5 +37,9 @@ public class Player {
 	public Color getColor() {
 		return color;
 	}
+	
+	public boolean isHuman() {
+		return false;
+	}
 		
 }

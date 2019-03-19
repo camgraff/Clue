@@ -271,4 +271,8 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
+	
+	public Player getPlayer(int p) {
+		return null;
+	}
 }
