@@ -26,7 +26,7 @@ public class gameSetupTests {
 	//Make sure 1st, 3rd, and last players were loaded correctly
 	@Test
 	public void testLoadPlayers() {
-		assertEquals(board.getPlayer(1).getName(), "Miss Scarlet");
+		assertEquals(board.getPlayer(1).getName(), "Miss Scarlett");
 		assertEquals(board.getPlayer(1).getColor(), Color.RED);
 		assertEquals(board.getPlayer(1).isHuman(), true);
 		assertEquals(board.getPlayer(1).getRow(), 9);

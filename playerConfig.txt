@@ -1,6 +1,6 @@
-Human, Miss Scarlett, 9, 0, Red
-Computer, Professor Plum, 0, 3, Purple
-Computer, Mrs. Peacock, 0, 12, Blue
-Computer, Mr. Green, 7, 23, Green
-Computer, Colonel Mustard, 18, 23, Yellow
-Computer, Mrs. White, 17, 2, White
+Human, Miss Scarlett, 9, 0, red,
+Computer, Professor Plum, 0, 3, purple,
+Computer, Mrs. Peacock, 0, 12, blue,
+Computer, Mr. Green, 7, 23, green,
+Computer, Colonel Mustard, 18, 23, yellow,
+Computer, Mrs. White, 17, 2, white,

@@ -1,8 +1,10 @@
 //@authors: Cameron Graff and James Mach
 
 package clueGame;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,8 +38,7 @@ public class Board {
 	//loads data files into board
 	public void initialize() {
 		try {			
-			loadRoomConfig();
-			loadBoardConfig();
+			loadConfigFiles();
 			calcAdjacencies();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
@@ -49,13 +50,31 @@ public class Board {
 		roomConfigFile = room;
 		boardConfigFile = board;
 	}
-	
-	public void loadConfigFiles() {
-		
+
+	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
+		loadRoomConfig();
+		loadBoardConfig();
+		loadPlayerConfig();
 	}
-	
+
 	public void loadPlayerConfig() throws FileNotFoundException {
-		
+		FileReader in = new FileReader("playerConfig.txt");
+		Scanner playerScan = new Scanner(in);
+		playerScan.useDelimiter(",");
+		for (int i = 0; i < 6; i++) {
+			String type, name, row, column, color;
+			type = playerScan.next().trim();
+			name = playerScan.next().trim();
+			row = playerScan.next().trim();
+			column = playerScan.next().trim();
+			color = playerScan.next().trim();
+
+			if (type.equals("Human")) {
+				players[i] = new HumanPlayer(name, Integer.parseInt(row), Integer.parseInt(column) , convertColor(color));
+			} else {
+				players[i] = new ComputerPlayer(name, Integer.valueOf(row), Integer.valueOf(column) , convertColor(color));
+			}
+		}
 	}
 
 	//sets up board with row, column, initial of each room
@@ -115,24 +134,24 @@ public class Board {
 				i++;
 				//set door direction
 				switch(c) {
-					case ',' :
-						continue;
-					case 'R' :
-						board[row][col].setDoorDirection(DoorDirection.RIGHT);
-						break;
-					case 'L' :
-						board[row][col].setDoorDirection(DoorDirection.LEFT);
-						break;
-					case 'U' :
-						board[row][col].setDoorDirection(DoorDirection.UP);
-						break;
-					case 'D' :
-						board[row][col].setDoorDirection(DoorDirection.DOWN);
-						break;
-					case 'N' :
-						continue;
-					default:
-						break;
+				case ',' :
+					continue;
+				case 'R' :
+					board[row][col].setDoorDirection(DoorDirection.RIGHT);
+					break;
+				case 'L' :
+					board[row][col].setDoorDirection(DoorDirection.LEFT);
+					break;
+				case 'U' :
+					board[row][col].setDoorDirection(DoorDirection.UP);
+					break;
+				case 'D' :
+					board[row][col].setDoorDirection(DoorDirection.DOWN);
+					break;
+				case 'N' :
+					continue;
+				default:
+					break;
 				}
 			}
 		}
@@ -161,7 +180,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	//calculates the adjacency list for each cell in the board
 	public void calcAdjacencies() {
 		adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
@@ -170,18 +189,18 @@ public class Board {
 				Set<BoardCell> adjCells = new HashSet<BoardCell>();
 				if(board[r][c].isDoorway()) {
 					switch(board[r][c].getDoorDirection()) {
-						case LEFT :
-							adjCells.add(board[r][c-1]);
-							break;
-						case RIGHT : 
-							adjCells.add(board[r][c+1]);
-							break;
-						case UP :
-							adjCells.add(board[r-1][c]);
-							break;
-						case DOWN :
-							adjCells.add(board[r+1][c]);
-							break;
+					case LEFT :
+						adjCells.add(board[r][c-1]);
+						break;
+					case RIGHT : 
+						adjCells.add(board[r][c+1]);
+						break;
+					case UP :
+						adjCells.add(board[r-1][c]);
+						break;
+					case DOWN :
+						adjCells.add(board[r+1][c]);
+						break;
 					}
 				} else if (board[r][c].isWalkway()){
 
@@ -211,7 +230,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	//secondary function used in calcTargets. Finds targets cells that are numSteps away from a cell
 	private void findAllTargets(BoardCell thisCell, int numSteps) {
 		for (BoardCell cell : adjMatrix.get(thisCell)) {
@@ -227,7 +246,7 @@ public class Board {
 			visited.remove(cell);
 		}
 	}
-	
+
 	//uses adjacency lists to calculate targets that are numSteps away from a cell on the board
 	public void calcTargets(int row, int col, int pathLength) {
 		visited = new HashSet<BoardCell>();
@@ -235,17 +254,29 @@ public class Board {
 		visited.add(board[row][col]);
 		findAllTargets(board[row][col], pathLength);
 	}
-	
+
 	public void selectAnswer() {
-		
+
 	}
-	
+
 	public Card handleSuggestion() {
 		return null;
 	}
-	
+
 	public boolean checkAccusation(Solution accustion) {
 		return false;
+	}
+
+	public Color convertColor(String strColor) {
+		Color color;
+		try {
+			// We can use reflection to convert the string to a color
+			Field field = Class.forName("java.awt.Color").getField(strColor.trim());
+			color = (Color)field.get(null);
+		} catch (Exception e) {
+			color = null; // Not defined
+		}
+		return color;
 	}
 
 	public Map<Character, String> getLegend() {
@@ -271,8 +302,8 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
-	
+
 	public Player getPlayer(int p) {
-		return null;
+		return players[p-1];
 	}
 }

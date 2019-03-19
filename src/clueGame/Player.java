@@ -38,6 +38,26 @@ public class Player {
 		return color;
 	}
 	
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+
 	public boolean isHuman() {
 		return false;
 	}
