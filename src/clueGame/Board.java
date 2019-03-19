@@ -149,7 +149,8 @@ public class Board {
 			}
 		}
 	}
-
+	
+	//calculates the adjacency list for each cell in the board
 	public void calcAdjacencies() {
 		adjMatrix = new HashMap<BoardCell, Set<BoardCell>>();
 		for(int r =0; r <numRows; r++) {
@@ -213,7 +214,8 @@ public class Board {
 			visited.remove(cell);
 		}
 	}
-
+	
+	//uses adjacency lists to calculate targets that are numSteps away from a cell on the board
 	public void calcTargets(int row, int col, int pathLength) {
 		visited = new HashSet<BoardCell>();
 		targets = new HashSet<BoardCell>();
