@@ -53,15 +53,15 @@ public class Board {
 		numColumns = 1;
 		//calculates number of rows and columns
 		FileReader in = new FileReader(boardConfigFile);
-		Scanner sc = new Scanner(in);
-		for (char c : sc.nextLine().toCharArray()) {
+		Scanner countRowCols = new Scanner(in);
+		for (char c : countRowCols.nextLine().toCharArray()) {
 			if (c == ',') {
 				numColumns++;
 			}
 		}
-		while(sc.hasNextLine()) {
+		while(countRowCols.hasNextLine()) {
 			numRows++;
-			sc.nextLine();
+			countRowCols.nextLine();
 		}
 
 		//makes sure all rows have the same number of columns, otherwise throws exception
