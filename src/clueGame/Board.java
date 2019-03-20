@@ -57,6 +57,13 @@ public class Board {
 		loadRoomConfig();
 		loadBoardConfig();
 		loadPlayerConfig();
+		loadWeaponConfig();
+	}
+	
+	public void loadWeaponConfig() throws FileNotFoundException {
+		FileReader in = new FileReader("weaponConfig.txt");
+		Scanner weaponScan = new Scanner(in);
+		deck.add(new Card(weaponScan.nextLine(), CardType.WEAPON));
 	}
 
 	public void loadPlayerConfig() throws FileNotFoundException {
