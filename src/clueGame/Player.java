@@ -1,12 +1,14 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class Player {
 	private String playerName;
 	private int row;
 	private int column;
 	private Color color;
+	private ArrayList<Card> hand = new ArrayList<Card>();
 	
 	
 	public Player(String playerName, int row, int column, Color color) {
@@ -20,6 +22,10 @@ public class Player {
 
 	Card disproveSuggestion(Solution suggestion) {
 		return null;
+	}
+	
+	public void recieveCard(Card c) {
+		hand.add(c);
 	}
 	
 	public String getName() {

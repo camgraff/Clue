@@ -16,8 +16,8 @@ public class gameSetupTests {
 
 	private static Board board;
 
-	@Before
-	public void setUp() {
+	@BeforeClass
+	public static void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -69,6 +69,15 @@ public class gameSetupTests {
 		assertEquals("Miss Scarlett", board.getDeck().get(9).getName());
 		assertEquals("Candlestick", board.getDeck().get(15).getName());
 
+	}
+	
+	//Make sure cards are dealt correctly
+	@Test
+	public void testDealCards() {
+		//Ensure all cards have been dealt (i.e. deck is empty)
+		assertEquals(0, board.getDeck().size());
+		//Ensure all players have roughly the same number of cards
+		
 	}
 
 }

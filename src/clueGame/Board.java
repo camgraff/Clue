@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -27,8 +28,9 @@ public class Board {
 	private String playerConfigFile;
 	private static Board theInstance = new Board();
 	private Set<BoardCell> visited;
-	private Player[] players = new Player[6];
+	private Player[] players;
 	private ArrayList<Card> deck;
+	private Solution solution;
 
 
 	private Board() {}
@@ -53,14 +55,33 @@ public class Board {
 		roomConfigFile = room;
 		boardConfigFile = board;
 	}
-
+	
+	//loads all configuration files
 	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
 		loadRoomConfig();
 		loadBoardConfig();
 		loadPlayerConfig();
 		loadWeaponConfig();
 	}
-
+	
+	//deals card to solution and all players
+	public void dealCards() {
+		//shuffle deck
+		Random rand = new Random();
+		for (int i = 0; i < 100; i++) 
+        { 
+            // Random for remaining positions. 
+            int r = i = rand.nextInt(52 - i); 
+              
+             //swapping the elements 
+             Card temp = deck.get(r); 
+             deck.set(r, deck.get(i)); 
+             deck.set(i, temp);
+               
+        } 
+	}
+	
+	//loads weapons into deck
 	public void loadWeaponConfig() throws FileNotFoundException {
 		FileReader in = new FileReader("weaponConfig.txt");
 		Scanner weaponScan = new Scanner(in);
@@ -69,7 +90,9 @@ public class Board {
 		}
 	}
 
+	//loads players into the board and deck
 	public void loadPlayerConfig() throws FileNotFoundException {
+		players = new Player[6];
 		FileReader in = new FileReader("playerConfig.txt");
 		Scanner playerScan = new Scanner(in);
 		playerScan.useDelimiter(",");
@@ -170,7 +193,7 @@ public class Board {
 		}
 	}
 
-	//sets up legend with initial, name of each room
+	//sets up legend with initial, name of each room. Adds rooms to deck
 	public void loadRoomConfig() throws FileNotFoundException, BadConfigFormatException {
 		legend = new HashMap<Character, String>();
 		FileReader reader = new FileReader(roomConfigFile);
