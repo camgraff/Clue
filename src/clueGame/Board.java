@@ -28,7 +28,7 @@ public class Board {
 	private static Board theInstance = new Board();
 	private Set<BoardCell> visited;
 	private Player[] players = new Player[6];
-	private ArrayList<Card> deck = new ArrayList<Card>();
+	private ArrayList<Card> deck;
 
 
 	private Board() {}
@@ -39,6 +39,7 @@ public class Board {
 
 	//loads data files into board
 	public void initialize() {
+		deck = new ArrayList<Card>();
 		try {			
 			loadConfigFiles();
 			calcAdjacencies();
@@ -59,11 +60,13 @@ public class Board {
 		loadPlayerConfig();
 		loadWeaponConfig();
 	}
-	
+
 	public void loadWeaponConfig() throws FileNotFoundException {
 		FileReader in = new FileReader("weaponConfig.txt");
 		Scanner weaponScan = new Scanner(in);
-		deck.add(new Card(weaponScan.nextLine(), CardType.WEAPON));
+		while(weaponScan.hasNextLine()) {
+			deck.add(new Card(weaponScan.nextLine(), CardType.WEAPON));
+		}
 	}
 
 	public void loadPlayerConfig() throws FileNotFoundException {
@@ -319,7 +322,7 @@ public class Board {
 	public Player getPlayer(int p) {
 		return players[p-1];
 	}
-	
+
 	public ArrayList<Card> getDeck() {
 		return deck;
 	}
