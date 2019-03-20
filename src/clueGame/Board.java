@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class Board {
 	private static Board theInstance = new Board();
 	private Set<BoardCell> visited;
 	private Player[] players = new Player[6];
+	private ArrayList<Card> deck = new ArrayList<Card>();
 
 
 	private Board() {}
@@ -74,6 +76,7 @@ public class Board {
 			} else {
 				players[i] = new ComputerPlayer(name, Integer.valueOf(row), Integer.valueOf(column) , convertColor(color));
 			}
+			deck.add(new Card(name, CardType.PERSON));
 		}
 	}
 
@@ -174,8 +177,11 @@ public class Board {
 			}
 			roomName = roomName.substring(0, roomName.length()-1);
 			legend.put(key, roomName);
-			roomName = in.next();
-			if (!roomName.equals("Card") && !roomName.equals("Other")) {
+			String roomType = in.next();
+			if (roomType.equals("Card")) {
+				deck.add(new Card(roomName, CardType.ROOM));
+			}
+			if (!roomType.equals("Card") && !roomType.equals("Other")) {
 				throw new BadConfigFormatException("badFormat");
 			}
 		}
@@ -305,5 +311,9 @@ public class Board {
 
 	public Player getPlayer(int p) {
 		return players[p-1];
+	}
+	
+	public ArrayList<Card> getDeck() {
+		return deck;
 	}
 }

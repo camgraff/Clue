@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.awt.Color;
 
 import clueGame.Board;
+import clueGame.Card;
+import clueGame.CardType;
 
 public class gameSetupTests {
 
@@ -24,6 +26,7 @@ public class gameSetupTests {
 	}
 
 	//Make sure 1st, 3rd, and last players were loaded correctly
+	//Tests name, color, human or computer, and start location
 	@Test
 	public void testLoadPlayers() {
 		assertEquals(board.getPlayer(1).getName(), "Miss Scarlett");
@@ -43,6 +46,30 @@ public class gameSetupTests {
 		assertEquals(board.getPlayer(6).isHuman(), false);
 		assertEquals(board.getPlayer(6).getRow(), 17);
 		assertEquals(board.getPlayer(6).getColumn(), 2);
+	}
+	
+	//Make sure deck of cards was loaded correctly
+	
+	@Test
+	public void testLoadCards() {
+		//Ensure deck has all of the cards
+		assertEquals(21, board.getDeck().size());
+		//Ensure deck has correct number of each type of card
+		int rooms = 0, weapons = 0, persons = 0;
+		for (Card c : board.getDeck() ) {
+			if (c.getType() == CardType.ROOM) rooms++;
+			else if (c.getType() == CardType.WEAPON) weapons++;
+			else if (c.getType() == CardType.PERSON) persons++;
+		}
+		assertEquals(9, rooms);
+		assertEquals(6, weapons);
+		assertEquals(6, persons);
+		
+		Card office = new Card("Office", CardType.ROOM);
+		assertTrue(board.getDeck().contains(office));
+		
+		
+
 	}
 
 }
