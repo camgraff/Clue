@@ -68,10 +68,10 @@ public class Board {
 	public void dealCards() {
 		//shuffle deck
 		Random rand = new Random();
-		for (int i = 0; i < 100; i++) 
+		for (int i = 0; i < 20; i++) 
         { 
             // Random for remaining positions. 
-            int r = i = rand.nextInt(52 - i); 
+            int r = i = rand.nextInt(deck.size() - i); 
               
              //swapping the elements 
              Card temp = deck.get(r); 
@@ -109,10 +109,11 @@ public class Board {
 		}
 		
 		solution = new Solution(firstPerson, firstRoom, firstWeapon);
-		
-		for(int i =deck.size()-1; i >= 0; i--) {
-			players[i%(players.length)].recieveCard(deck.get(i));
-			deck.remove(i);
+		int i =0;
+		while(!deck.isEmpty()) {
+			players[i%(players.length)].recieveCard(deck.get(0));
+			deck.remove(0);
+			i++;
 		}
 	}
 	
