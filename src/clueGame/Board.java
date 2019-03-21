@@ -30,7 +30,7 @@ public class Board {
 	private Set<BoardCell> visited;
 	private Player[] players;
 	private ArrayList<Card> deck;
-	private Solution solution;
+	private static Solution solution;
 
 
 	private Board() {}
@@ -77,8 +77,43 @@ public class Board {
              Card temp = deck.get(r); 
              deck.set(r, deck.get(i)); 
              deck.set(i, temp);
-               
-        } 
+  
+        }
+		//might need to change these, dont know how to get rid of error on line 111 without initializing to null.
+		Card firstPerson = null;
+		Card firstRoom = null;
+		Card firstWeapon = null;
+		//find first person card
+		for(int i = 0; i < deck.size(); i++) {
+			if(deck.get(i).getType() == CardType.PERSON) {
+				firstPerson = deck.get(i);
+				deck.remove(i);
+				break;
+			}
+		}
+		//find first room card
+		for(int i = 0; i < deck.size(); i++) {
+			if(deck.get(i).getType() == CardType.ROOM) {
+				firstRoom = deck.get(i);
+				deck.remove(i);
+				break;
+			}
+		}
+		
+		for(int i = 0; i < deck.size(); i++) {
+			if(deck.get(i).getType() == CardType.WEAPON) {
+				firstWeapon = deck.get(i);
+				deck.remove(i);
+				break;
+			}
+		}
+		
+		solution = new Solution(firstPerson, firstRoom, firstWeapon);
+		
+		for(int i =deck.size()-1; i >= 0; i--) {
+			players[i%(players.length)].recieveCard(deck.get(i));
+			deck.remove(i);
+		}
 	}
 	
 	//loads weapons into deck
