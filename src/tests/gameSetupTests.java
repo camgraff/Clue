@@ -7,10 +7,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import clueGame.Board;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.Player;
 
 public class gameSetupTests {
 
@@ -21,7 +23,7 @@ public class gameSetupTests {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		board.setConfigFiles("rooms.csv", "legend.txt");		
+		board.setConfigFiles("Rooms.csv", "legend.txt");		
 		// Initialize will load all config files 
 		board.initialize();
 	}
@@ -70,14 +72,29 @@ public class gameSetupTests {
 		assertEquals("Candlestick", board.getDeck().get(15).getName());
 
 	}
-	
+
 	//Make sure cards are dealt correctly
 	@Test
 	public void testDealCards() {
 		//Ensure all cards have been dealt (i.e. deck is empty)
 		assertEquals(0, board.getDeck().size());
 		//Ensure all players have roughly the same number of cards
-		
+		int leastCards = board.getPlayer(6).getHand().size();
+		for (Player p : board.getPlayers()) {
+			assertTrue (p.getHand().size() >= leastCards && p.getHand().size() >= leastCards + 1);
+		}
+		//Ensure no two players have the same card
+		for (Player i : board.getPlayers()) {
+			for (Player j : board.getPlayers()) {
+				for (Card m : i.getHand()) {
+					for (Card n : j.getHand()) {
+						assertTrue(m.equals(n));
+					}
+				}
+			}
+		}
 	}
-
 }
+
+
+

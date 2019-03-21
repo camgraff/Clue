@@ -341,6 +341,10 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
+	
+	public Player[] getPlayers() {
+		return players;
+	}
 
 	public Player getPlayer(int p) {
 		return players[p-1];

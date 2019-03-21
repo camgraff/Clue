@@ -44,6 +44,10 @@ public class Player {
 		return color;
 	}
 	
+	public ArrayList<Card> getHand() {
+		return hand;
+	}
+	
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
