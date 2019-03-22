@@ -55,7 +55,7 @@ public class Board {
 		roomConfigFile = room;
 		boardConfigFile = board;
 	}
-	
+
 	//loads all configuration files
 	public void loadConfigFiles() throws FileNotFoundException, BadConfigFormatException {
 		loadRoomConfig();
@@ -63,22 +63,20 @@ public class Board {
 		loadPlayerConfig();
 		loadWeaponConfig();
 	}
-	
+
 	//deals card to solution and all players
 	public void dealCards() {
 		//shuffle deck
 		Random rand = new Random();
 		for (int i = 0; i < 20; i++) 
-        { 
-            // Random for remaining positions. 
-            int r = rand.nextInt(deck.size() - i); 
-              
-             //swapping the elements 
-             Card temp = deck.get(r); 
-             deck.set(r, deck.get(i)); 
-             deck.set(i, temp);
-  
-        }
+		{ 
+			int r = rand.nextInt(deck.size() - i); 
+			//swapping the elements 
+			Card temp = deck.get(r); 
+			deck.set(r, deck.get(i)); 
+			deck.set(i, temp);
+
+		}
 		//might need to change these, dont know how to get rid of error on line 111 without initializing to null.
 		Card firstPerson = null;
 		Card firstRoom = null;
@@ -99,7 +97,7 @@ public class Board {
 				break;
 			}
 		}
-		
+
 		for(int i = 0; i < deck.size(); i++) {
 			if(deck.get(i).getType() == CardType.WEAPON) {
 				firstWeapon = deck.get(i);
@@ -107,15 +105,16 @@ public class Board {
 				break;
 			}
 		}
-		
+
 		solution = new Solution(firstPerson, firstRoom, firstWeapon);
-		
-		for(int i =deck.size()-1; i >= 0; i--) {
-			players[i%(players.length)].recieveCard(deck.get(i));
-			deck.remove(i);
+		int i =0;
+		while(!deck.isEmpty()) {
+			players[i%(players.length)].recieveCard(deck.get(0));
+			deck.remove(0);
+			i++;
 		}
 	}
-	
+
 	//loads weapons into deck
 	public void loadWeaponConfig() throws FileNotFoundException {
 		FileReader in = new FileReader("weaponConfig.txt");
@@ -376,7 +375,7 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}
-	
+
 	public Player[] getPlayers() {
 		return players;
 	}
