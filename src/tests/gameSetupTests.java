@@ -18,8 +18,8 @@ public class gameSetupTests {
 
 	private static Board board;
 
-	@BeforeClass
-	public static void setUp() {
+	@Before
+	public void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -76,19 +76,20 @@ public class gameSetupTests {
 	//Make sure cards are dealt correctly
 	@Test
 	public void testDealCards() {
+		board.dealCards();
 		//Ensure all cards have been dealt (i.e. deck is empty)
 		assertEquals(0, board.getDeck().size());
 		//Ensure all players have roughly the same number of cards
 		int leastCards = board.getPlayer(6).getHand().size();
 		for (Player p : board.getPlayers()) {
-			assertTrue (p.getHand().size() >= leastCards && p.getHand().size() >= leastCards + 1);
+			assertTrue (p.getHand().size() >= leastCards && p.getHand().size() <= leastCards + 1);
 		}
 		//Ensure no two players have the same card
-		for (Player i : board.getPlayers()) {
-			for (Player j : board.getPlayers()) {
-				for (Card m : i.getHand()) {
-					for (Card n : j.getHand()) {
-						assertTrue(m.equals(n));
+		for (int i = 1; i <= 6; i++) {
+			for (int j = i+1; j <=6; j++) {
+				for (Card m : board.getPlayer(i).getHand()) {
+					for (Card n : board.getPlayer(j).getHand()) {
+						assertTrue(!m.equals(n));
 					}
 				}
 			}

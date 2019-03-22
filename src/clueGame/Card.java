@@ -14,6 +14,9 @@ public class Card {
 
 
 	public boolean equals(Card other) {
+		if (cardName == other.getName() && cardType == other.getType()) {
+			return true;
+		}
 		return false;
 	}
 	
