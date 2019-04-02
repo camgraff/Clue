@@ -22,6 +22,7 @@ public class Player {
 
 
 	Card disproveSuggestion(Solution suggestion) {
+		//check if card is in solution
 		return null;
 	}
 	
