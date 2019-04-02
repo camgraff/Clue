@@ -337,7 +337,7 @@ public class Board {
 	}
 
 	public boolean checkAccusation(Solution accustion) {
-		return false;
+		return solution.equals(accustion);
 	}
 	
 	public BoardCell selectTarget(Player p) {

@@ -11,7 +11,10 @@ public class ComputerPlayer extends Player {
 	}
 
 	public BoardCell pickLocation(Set<BoardCell> targets) {
-		return null;
+		//choose random target 
+		BoardCell[] targetsArray = (BoardCell[]) targets.toArray();
+		int randomIndex = (int)(Math.random()*targetsArray.length);
+		return targetsArray[randomIndex];
 	}
 	
 	public void makeAccusation() {
