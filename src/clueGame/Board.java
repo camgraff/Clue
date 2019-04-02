@@ -339,6 +339,10 @@ public class Board {
 	public boolean checkAccusation(Solution accustion) {
 		return false;
 	}
+	
+	public BoardCell selectTarget(Player p) {
+		return board[0][0];
+	}
 
 	public Color convertColor(String strColor) {
 		Color color;
@@ -381,7 +385,8 @@ public class Board {
 	}
 
 	public Player getPlayer(int p) {
-		return players[p-1];
+		if (p == 1) return (HumanPlayer) players[p-1];
+		else return (ComputerPlayer) players[p-1];
 	}
 
 	public ArrayList<Card> getDeck() {

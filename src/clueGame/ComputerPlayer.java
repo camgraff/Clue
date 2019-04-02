@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.Set;
 
 public class ComputerPlayer extends Player {
+	private BoardCell justVisited;
+	
 	public ComputerPlayer(String playerName, int row, int column, Color color) {
 		super(playerName, row, column, color);
 	}
