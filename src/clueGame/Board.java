@@ -341,7 +341,7 @@ public class Board {
 	}
 	
 	public BoardCell selectTarget(ComputerPlayer p) {
-		return board[0][0];
+		return p.pickLocation(targets);
 	}
 
 	public Color convertColor(String strColor) {
