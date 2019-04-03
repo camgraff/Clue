@@ -1,7 +1,9 @@
 package clueGame;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -40,12 +42,22 @@ public class ComputerPlayer extends Player {
 		return new Solution(new Card(person, CardType.PERSON), new Card(room, CardType.ROOM), new Card(weapon, CardType.WEAPON));
 	}
 
-	public Solution createSuggestion() {
-		return new Solution(new Card(), new Card(), new Card());
+	public Solution createSuggestion(ArrayList<Card> allCards, BoardCell[][] board, Map< Character, String> legend) {
+		ArrayList<Card> possiblePersons = new ArrayList<Card>();
+		ArrayList<Card> possibleWeapons = new ArrayList<Card>();
+		for (Card crd : allCards) {
+			if (!seenCards.contains(crd) && crd.getType()==CardType.PERSON) 
+				possiblePersons.add(crd);
+			if (!seenCards.contains(crd) && crd.getType()==CardType.WEAPON) 
+				possibleWeapons.add(crd);
+		}
+		int randomPerson = new Random().nextInt(possiblePersons.size());
+		int randomWeapon = new Random().nextInt(possibleWeapons.size());
+		return new Solution(possiblePersons.get(randomPerson), new Card(legend.get(board[getRow()][getColumn()].getInitial()), CardType.ROOM), possibleWeapons.get(randomWeapon));
 	}
 	
 	public void addSeenCards(Card crd) {
-		//seenCards.add(crd);
+		seenCards.add(crd);
 	}
 
 }

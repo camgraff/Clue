@@ -31,6 +31,8 @@ public class Board {
 	private Player[] players;
 	private ArrayList<Card> deck;
 	private static Solution solution;
+	
+	public ArrayList<Card> allCards;
 
 
 	private Board() {}
@@ -48,6 +50,7 @@ public class Board {
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
 		}
+		allCards = new ArrayList<Card>(deck);
 	}
 
 	//sets names of config files used to loard board and room configurations
@@ -367,6 +370,10 @@ public class Board {
 	public BoardCell getCellAt(int row, int col) {
 		return board[row][col];
 	}
+	
+	public BoardCell[][] getBoard() {
+		return board;
+	}
 
 	public Set<BoardCell> getAdjList(int row, int col) {
 		return adjMatrix.get(board[row][col]);
@@ -391,5 +398,9 @@ public class Board {
 	
 	public void setSolution(Solution newSolution) {
 		solution = newSolution;
+	}
+	
+	public ArrayList<Card> getAllCards() {
+		return allCards;
 	}
 }

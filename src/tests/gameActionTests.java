@@ -69,7 +69,7 @@ public class gameActionTests {
 		currentTarget = player.pickLocation(board.getTargets());
 		assertEquals (7, currentTarget.getRow());
 		assertEquals (2, currentTarget.getColumn());
-		
+
 		board.calcTargets(17, 3, 5);
 		currentTarget = player.pickLocation(board.getTargets());
 		assertEquals (14, currentTarget.getRow());
@@ -93,7 +93,7 @@ public class gameActionTests {
 		}
 		assertTrue(cell1 > 20 && cell2 > 20 && cell3 > 20);
 	}
-	
+
 	@Test
 	//check that accusations are checkd correctly
 	public void testAccusation() {
@@ -104,11 +104,11 @@ public class gameActionTests {
 		Card weapon = new Card("Revolver", CardType.WEAPON);
 		Solution solution = new Solution(person, room, weapon);
 		board.setSolution(solution);
-		
+
 		//should return true when accusation is correct
 		playerGuess = player.makeAccusation("Miss Scarlet", "Swimming Pool", "Revolver");
 		assertTrue(board.checkAccusation(playerGuess));
-		
+
 		//should return false if any one of the cards are incorrect
 		playerGuess = player.makeAccusation("Mr. Green", "Swimming Pool", "Revolver");
 		assertFalse(board.checkAccusation(playerGuess));
@@ -117,55 +117,56 @@ public class gameActionTests {
 		playerGuess = player.makeAccusation("Miss Scarlet", "Swimming Pool", "Baseball Bat");
 		assertFalse(board.checkAccusation(playerGuess));
 	}
-	
+
 	@Test
-	//check that suggestions are made correctly
-	public void testCreateSuggestion() {
-		//Room should match players current location
+	//Room should match players current location
+	//if only one weapon or person not seen, should be selected
+	public void testCreateSuggestionOneNotSeen() {
 		player.setRow(22);
 		player.setColumn(20);
-		assertEquals("Studio", player.createSuggestion().getRoom().getName());
-		
-		//if only one weapon or person not seen, should be selected
-		for (Card crd : board.getDeck()) {
-			if (crd.getType() == CardType.WEAPON && crd.getName() != "Lead Pipe")
-					player.addSeenCards(crd);
-			if (crd.getType() == CardType.PERSON && crd.getName() != "Colonel Mustard")
-				player.addSeenCards(crd);
-		}
-		assertEquals("Lead Pipe", player.createSuggestion().getWeapon().getName());
-		assertEquals("Colonel Mustard", player.createSuggestion().getPerson().getName());
+		assertEquals("Studio", player.createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend()).getRoom().getName());
 
-		player = new ComputerPlayer();
-		//if multiple persons or weapons not seen, should randomly select
 		for (Card crd : board.getDeck()) {
-			if (crd.getType() == CardType.WEAPON && crd.getName() != "Lead Pipe" && crd.getName() != "Knife" && crd.getName() != "Baseball Bat" )
-					player.addSeenCards(crd);
-			if (crd.getType() == CardType.PERSON && crd.getName() != "Colonel Mustard" && crd.getName() != "Mr. Green" && crd.getName() != "Mrs. White")
+			if (crd.getType() == CardType.WEAPON && !crd.getName().equals("Lead Pipe"))
+				player.addSeenCards(crd);
+			if (crd.getType() == CardType.PERSON && !crd.getName().equals("Colonel Mustard"))
 				player.addSeenCards(crd);
 		}
-		
+		assertEquals("Lead Pipe", player.createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend()).getWeapon().getName());
+		assertEquals("Colonel Mustard", player.createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend()).getPerson().getName());
+	}
+	@Test
+	//if multiple persons or weapons not seen, should randomly select
+	public void testCreateSuggestionMultNotSeen() {
+		for (Card crd : board.getDeck()) {
+			if (crd.getType() == CardType.WEAPON && !crd.getName().equals("Lead Pipe") && !crd.getName().equals("Knife") && !crd.getName().equals("Baseball Bat") )
+				player.addSeenCards(crd);
+			if (crd.getType() == CardType.PERSON && !crd.getName().equals("Colonel Mustard") && !crd.getName().equals("Mr. Green") && !crd.getName().equals("Mrs. White"))
+				player.addSeenCards(crd);
+		}
+
 		int pipe = 0, knife = 0, bat = 0, mustard = 0, green = 0, white = 0;;
 		for (int i=0; i<100; i++) {
-			String weaponGuess = player.createSuggestion().getWeapon().getName();
-			String personGuess = player.createSuggestion().getPerson().getName();
-			if (weaponGuess == "Lead Pipe")
+			String weaponGuess = player.createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend()).getWeapon().getName();
+			String personGuess = player.createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend()).getPerson().getName();
+			if (weaponGuess.equals("Lead Pipe"))
 				pipe++;
-			else if (weaponGuess == "Knife")
+			else if (weaponGuess.equals("Knife"))
 				knife++;
-			else if (weaponGuess == "Baseball Bat")
+			else if (weaponGuess.equals("Baseball Bat"))
 				bat++;
-			
-			if (personGuess == "Colonel Mustard")
+
+			if (personGuess.equals("Colonel Mustard"))
 				mustard++;
-			else if (personGuess == "Mr. Green")
+			else if (personGuess.equals("Mr. Green"))
 				green++;
-			else if (personGuess == "Mrs. White")
+			else if (personGuess.equals("Mrs. White"))
 				white++;
 		}
 		assertTrue(pipe > 15 && knife > 15 && bat > 15 && mustard>15 && green>15 && white>15);
 	}
 }
+
 
 
 
