@@ -23,9 +23,9 @@ public class Player {
 	}
 
 
-	Card disproveSuggestion(Solution suggestion) {
+	public Card disproveSuggestion(Solution suggestion) {
 		//check if card is in solution
-		return null;
+		return new Card("bad", CardType.PERSON);
 	}
 	
 	public void recieveCard(Card c) {

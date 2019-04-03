@@ -10,6 +10,7 @@ import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
+import clueGame.Player;
 import clueGame.Solution;
 
 public class gameActionTests {
@@ -164,6 +165,37 @@ public class gameActionTests {
 				white++;
 		}
 		assertTrue(pipe > 15 && knife > 15 && bat > 15 && mustard>15 && green>15 && white>15);
+	}
+	
+	@Test
+	public void TestDisproveSuggestionOneMatch() {
+		//give player cards
+		Player plr = new Player();
+		plr.recieveCard(new Card("Miss Scarlett", CardType.PERSON));
+		plr.recieveCard(new Card("Bowling Alley", CardType.ROOM));
+		plr.recieveCard(new Card("Hammer", CardType.WEAPON));	
+		
+		//if player only has 1 matching card, should be returned
+		Solution suggestion = new Solution(new Card("Miss Scarlett", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
+		assertTrue(plr.disproveSuggestion(suggestion).getName().equals("Miss Scarlett"));
+		
+		//if player has more than 1 matching card, should choose randomly
+		suggestion = new Solution(new Card("Miss Scarlett", CardType.PERSON), new Card("Bowling Alley", CardType.ROOM), new Card("Hammer", CardType.WEAPON));
+		int person = 0, room = 0, weapon = 0;
+		for (int i=0; i<100; i++) {
+			String disprove = plr.disproveSuggestion(suggestion).getName();
+			if (disprove.equals("Miss Scarlett"))
+				person++;
+			else if (disprove.equals("Bowling Alley"))
+				room++;
+			else if (disprove.equals("Hammer"))
+				weapon++;
+		}
+		assertTrue(person>15 && room>15 && weapon>15);
+		
+		//if player has no matching cards should return null
+		suggestion = new Solution(new Card("Mr. Green", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
+		assertEquals(null, player.disproveSuggestion(suggestion));
 	}
 }
 
