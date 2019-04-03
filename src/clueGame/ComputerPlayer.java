@@ -14,6 +14,7 @@ public class ComputerPlayer extends Player {
 		//choose random target 
 		BoardCell[] targetsArray = (BoardCell[]) targets.toArray();
 		int randomIndex = (int)(Math.random()*targetsArray.length);
+		//justVisited = targetsArray[randomIndex];
 		return targetsArray[randomIndex];
 	}
 	

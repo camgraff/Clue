@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import clueGame.Board;
+import clueGame.ComputerPlayer;
 
 public class gameActionTests {
 
@@ -29,7 +30,7 @@ public class gameActionTests {
 		int cell1, cell2;
 		cell1 = cell2 = 0;
 		for (int i=0; i<100; i++) {
-			if (board.selectTarget(board.getPlayer(2)).getRow() == 8) {
+			if (board.selectTarget((ComputerPlayer) board.getPlayer(2)).getRow() == 8) {
 				cell1++;
 			} else cell2++;
 		}
@@ -38,11 +39,11 @@ public class gameActionTests {
 		int cell3, cell4;
 		cell1 = cell2 = cell3 = cell4 = 0;
 		for (int i=0; i<100; i++) {
-			if (board.selectTarget(board.getPlayer(2)).getRow() == 8) {
+			if (board.selectTarget((ComputerPlayer) board.getPlayer(2)).getRow() == 8) {
 				cell1++;
-			} else if (board.selectTarget(board.getPlayer(2)).getRow() == 10)  {
+			} else if (board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow() == 10)  {
 				cell2++;
-			} else if (board.selectTarget(board.getPlayer(2)).getColumn() == 4) {
+			} else if (board.selectTarget((ComputerPlayer)board.getPlayer(2)).getColumn() == 4) {
 				cell3++;
 			} else cell4++;
 		}
@@ -50,14 +51,23 @@ public class gameActionTests {
 
 		//if room is in list, but not just visited, should visit room
 		board.calcTargets(8, 3, 3);
-		assertEquals (7, board.selectTarget(board.getPlayer(2)).getRow());
-		assertEquals (2, board.selectTarget(board.getPlayer(2)).getColumn());
+		assertEquals (7, board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow());
+		assertEquals (2, board.selectTarget((ComputerPlayer)board.getPlayer(2)).getColumn());
 		board.calcTargets(17, 3, 5);
-		assertEquals (14, board.selectTarget(board.getPlayer(2)).getRow());
-		assertEquals (3, board.selectTarget(board.getPlayer(2)).getColumn());
-		
-		//if room just visited is in list, should select randomly
+		assertEquals (14, board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow());
+		assertEquals (3, board.selectTarget((ComputerPlayer)board.getPlayer(2)).getColumn());
 
+		//if room just visited is in list, should select randomly
+		board.calcTargets(21, 8, 3);
+		board.selectTarget((ComputerPlayer)board.getPlayer(2));
+		board.calcTargets(21, 8, 1);
+		cell1 = cell2 = cell3 = 0;
+		for (int i = 0; i < 100; i++) {
+			if (board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow() == 21) cell1++;
+			else if (board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow() == 20) cell2++;
+			else if (board.selectTarget((ComputerPlayer)board.getPlayer(2)).getRow() == 22) cell3++;
+		}
+		assertTrue(cell1 > 20 && cell2 > 20 && cell3 > 20);
 	}
 
 

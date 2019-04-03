@@ -340,7 +340,7 @@ public class Board {
 		return solution.equals(accustion);
 	}
 	
-	public BoardCell selectTarget(Player p) {
+	public BoardCell selectTarget(ComputerPlayer p) {
 		return board[0][0];
 	}
 
