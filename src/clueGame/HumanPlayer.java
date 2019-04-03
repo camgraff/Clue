@@ -8,6 +8,10 @@ public class HumanPlayer extends Player {
 		super(playerName, row, column, color);
 	}
 	
+	public HumanPlayer() {
+		super();
+	}
+	
 	@Override
 	public boolean isHuman() {
 		return true;

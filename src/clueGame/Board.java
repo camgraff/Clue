@@ -335,7 +335,7 @@ public class Board {
 
 	}
 
-	public Card handleSuggestion() {
+	public Card handleSuggestion(Solution suggestion, Player accuser) {
 		return null;
 	}
 

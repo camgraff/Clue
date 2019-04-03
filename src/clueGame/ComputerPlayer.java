@@ -51,6 +51,7 @@ public class ComputerPlayer extends Player {
 			if (!seenCards.contains(crd) && crd.getType()==CardType.WEAPON) 
 				possibleWeapons.add(crd);
 		}
+		//choose random person card and weapon card for suggestion
 		int randomPerson = new Random().nextInt(possiblePersons.size());
 		int randomWeapon = new Random().nextInt(possibleWeapons.size());
 		return new Solution(possiblePersons.get(randomPerson), new Card(legend.get(board[getRow()][getColumn()].getInitial()), CardType.ROOM), possibleWeapons.get(randomWeapon));

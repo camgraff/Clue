@@ -10,6 +10,7 @@ import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
 import clueGame.ComputerPlayer;
+import clueGame.HumanPlayer;
 import clueGame.Player;
 import clueGame.Solution;
 
@@ -196,6 +197,46 @@ public class gameActionTests {
 		//if player has no matching cards should return null
 		suggestion = new Solution(new Card("Mr. Green", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
 		assertEquals(null, player.disproveSuggestion(suggestion));
+	}
+	@Test
+	public void TestHandleSuggestion() {
+		Player[] players = board.getPlayers(); //load 6 players into array, 1st one in human
+		players[0].recieveCard(new Card("Thomas", CardType.PERSON));
+		for ( int i = 1; i<players.length; i++) {
+			players[i].recieveCard(new Card("Miss Scarlett", CardType.PERSON));
+		}
+		// all players have 1 card. 5 computer players have same card
+		
+		Solution notDisprovable = new Solution(new Card("Mr. Green", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
+		Solution diprovableBycPlr = new Solution(new Card("Miss Scarlett", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
+		Solution diprovableByhPlr = new Solution(new Card("Thomas", CardType.PERSON), new Card("Office", CardType.ROOM), new Card("Revolver", CardType.WEAPON));
+		
+		//test notDisprovable 
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[0]));
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[1]));
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[2]));
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[3]));
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[4]));
+		assertEquals(null,board.handleSuggestion(notDisprovable, players[5]));
+		
+		//test diprovableBycPlr
+		assertEquals(null,board.handleSuggestion(diprovableBycPlr, players[0]));
+		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[1]));
+		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[2]));
+		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[3]));
+		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[4]));
+		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[5]));
+		
+		//test diprovableByhPlr
+		assertEquals(new Card("Thomas", CardType.PERSON),board.handleSuggestion(diprovableByhPlr, players[0]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[1]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[2]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[3]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[4]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[5]));
+		
+		
+		
 	}
 }
 
