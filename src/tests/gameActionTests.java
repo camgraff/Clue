@@ -202,8 +202,9 @@ public class gameActionTests {
 	public void TestHandleSuggestion() {
 		Player[] players = board.getPlayers(); //load 6 players into array, 1st one in human
 		players[0].recieveCard(new Card("Thomas", CardType.PERSON));
-		for ( int i = 1; i<players.length; i++) {
-			players[i].recieveCard(new Card("Miss Scarlett", CardType.PERSON));
+		players[1].recieveCard(new Card("Miss Scarlett", CardType.PERSON));
+		for ( int i = 2; i<players.length; i++) {
+			players[i].recieveCard(new Card("nothing special", CardType.PERSON));
 		}
 		// all players have 1 card. 5 computer players have same card
 		
@@ -220,20 +221,20 @@ public class gameActionTests {
 		assertEquals(null,board.handleSuggestion(notDisprovable, players[5]));
 		
 		//test diprovableBycPlr
-		assertEquals(null,board.handleSuggestion(diprovableBycPlr, players[0]));
-		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[1]));
-		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[2]));
-		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[3]));
-		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[4]));
-		assertEquals(new Card("Miss Scarlett", CardType.PERSON),board.handleSuggestion(diprovableBycPlr, players[5]));
+		assertTrue(new Card("Miss Scarlett", CardType.PERSON).equals(board.handleSuggestion(diprovableBycPlr, players[0])));
+		assertEquals(null,board.handleSuggestion(diprovableBycPlr, players[1]));
+		assertTrue(new Card("Miss Scarlett", CardType.PERSON).equals(board.handleSuggestion(diprovableBycPlr, players[2])));
+		assertTrue(new Card("Miss Scarlett", CardType.PERSON).equals(board.handleSuggestion(diprovableBycPlr, players[3])));
+		assertTrue(new Card("Miss Scarlett", CardType.PERSON).equals(board.handleSuggestion(diprovableBycPlr, players[4])));
+		assertTrue(new Card("Miss Scarlett", CardType.PERSON).equals(board.handleSuggestion(diprovableBycPlr, players[5])));
 		
 		//test diprovableByhPlr
-		assertEquals(new Card("Thomas", CardType.PERSON),board.handleSuggestion(diprovableByhPlr, players[0]));
-		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[1]));
-		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[2]));
-		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[3]));
-		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[4]));
-		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[5]));
+		assertEquals(null,board.handleSuggestion(diprovableByhPlr, players[0]));
+		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[1])));
+		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[2])));
+		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[3])));
+		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[4])));
+		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[5])));
 		
 		
 		

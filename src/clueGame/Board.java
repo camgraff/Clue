@@ -336,6 +336,23 @@ public class Board {
 	}
 
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
+		if(accuser.isHuman()) {
+			for(Player p: players) {
+				if(p.equals(accuser)) {
+					continue;
+				} else if(p.disproveSuggestion(suggestion)!=null) {
+					return p.disproveSuggestion(suggestion);
+				}
+			}
+		} else {
+			for(Player p: players) {
+				if(p.equals(accuser)) {
+					continue;
+				} else if(p.disproveSuggestion(suggestion)!=null) {
+					return p.disproveSuggestion(suggestion);
+				}
+			}
+		}
 		return null;
 	}
 
