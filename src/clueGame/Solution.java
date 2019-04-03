@@ -13,18 +13,6 @@ public class Solution {
 		weapon = w;
 	}
 	
-	/*public Card getPerson() {
-		return person;
-	}
-	
-	public Card getRoom() {
-		return room;
-	}
-	
-	public Card getWeapon() {
-		return weapon;
-	}*/
-	
 	public boolean equals(Solution other) {
 		if(person.equals(other.person) && room.equals(other.room) && weapon.equals(other.weapon)) {
 			return true;

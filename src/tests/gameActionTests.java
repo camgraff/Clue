@@ -45,7 +45,7 @@ public class gameActionTests {
 			else if (currentTarget.getRow() == 10)
 				cell3++;
 		}
-		assertTrue(cell1 > 20 && cell2 > 20 && cell3 > 20); //only 3 targets so each should get hit more than 20 times
+		assertTrue(cell1 > 15 && cell2 > 15 && cell3 > 15); //only 3 targets so each should get hit more than 15 times
 
 		board.calcTargets(9, 5, 1);
 		cell1 = cell2 = cell3 = cell4 = 0;
@@ -60,7 +60,7 @@ public class gameActionTests {
 			} else if (currentTarget.getColumn() == 6)
 				cell4++;
 		}
-		assertTrue(cell1 > 15 && cell2 > 15 && cell3 > 15 && cell4 > 15); 
+		assertTrue(cell1 > 10 && cell2 > 10 && cell3 > 10 && cell4 > 10); 
 	}
 	@Test
 	//if room is in list, but not just visited, should visit room
@@ -104,9 +104,11 @@ public class gameActionTests {
 		Card weapon = new Card("Revolver", CardType.WEAPON);
 		Solution solution = new Solution(person, room, weapon);
 		board.setSolution(solution);
+		
 		//should return true when accusation is correct
 		playerGuess = player.makeAccusation("Miss Scarlet", "Swimming Pool", "Revolver");
 		assertTrue(board.checkAccusation(playerGuess));
+		
 		//should return false if any one of the cards are incorrect
 		playerGuess = player.makeAccusation("Mr. Green", "Swimming Pool", "Revolver");
 		assertFalse(board.checkAccusation(playerGuess));
@@ -114,6 +116,12 @@ public class gameActionTests {
 		assertFalse(board.checkAccusation(playerGuess));
 		playerGuess = player.makeAccusation("Miss Scarlet", "Swimming Pool", "Baseball Bat");
 		assertFalse(board.checkAccusation(playerGuess));
+	}
+	
+	@Test
+	//check that suggestions are made correctly
+	public void testCreateSuggestion() {
+		
 	}
 }
 

@@ -36,11 +36,11 @@ public class ComputerPlayer extends Player {
 	}
 
 	public Solution makeAccusation(String person, String room, String weapon) {
-		return new Solution(new Card(), new Card(), new Card());
+		return new Solution(new Card(person, CardType.PERSON), new Card(room, CardType.ROOM), new Card(weapon, CardType.WEAPON));
 	}
 
-	public void createSuggestion() {
-
+	public Solution createSuggestion(String person, String weapon) {
+		return new Solution(new Card(), new Card(), new Card());
 	}
 
 }

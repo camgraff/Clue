@@ -2,6 +2,8 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Player {
 	private String playerName;
@@ -9,7 +11,8 @@ public class Player {
 	private int column;
 	private Color color;
 	private ArrayList<Card> hand = new ArrayList<Card>();
-	
+	private Set<Card> seenCards = new HashSet<Card>();
+
 	public Player() {}
 	
 	public Player(String playerName, int row, int column, Color color) {
