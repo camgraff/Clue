@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player {
 	private BoardCell justVisited;
+	private Set<Card> seenCards = new HashSet<Card>();
 
 	public ComputerPlayer(String playerName, int row, int column, Color color) {
 		super(playerName, row, column, color);
@@ -39,8 +40,12 @@ public class ComputerPlayer extends Player {
 		return new Solution(new Card(person, CardType.PERSON), new Card(room, CardType.ROOM), new Card(weapon, CardType.WEAPON));
 	}
 
-	public Solution createSuggestion(String person, String weapon) {
+	public Solution createSuggestion() {
 		return new Solution(new Card(), new Card(), new Card());
+	}
+	
+	public void addSeenCards(Card crd) {
+		//seenCards.add(crd);
 	}
 
 }

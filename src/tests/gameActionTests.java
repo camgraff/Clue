@@ -95,7 +95,7 @@ public class gameActionTests {
 	}
 	
 	@Test
-	//check that accusations are check correctly
+	//check that accusations are checkd correctly
 	public void testAccusation() {
 		//set the solution
 		Solution playerGuess;
@@ -121,7 +121,49 @@ public class gameActionTests {
 	@Test
 	//check that suggestions are made correctly
 	public void testCreateSuggestion() {
+		//Room should match players current location
+		player.setRow(22);
+		player.setColumn(20);
+		assertEquals("Studio", player.createSuggestion().getRoom().getName());
 		
+		//if only one weapon or person not seen, should be selected
+		for (Card crd : board.getDeck()) {
+			if (crd.getType() == CardType.WEAPON && crd.getName() != "Lead Pipe")
+					player.addSeenCards(crd);
+			if (crd.getType() == CardType.PERSON && crd.getName() != "Colonel Mustard")
+				player.addSeenCards(crd);
+		}
+		assertEquals("Lead Pipe", player.createSuggestion().getWeapon().getName());
+		assertEquals("Colonel Mustard", player.createSuggestion().getPerson().getName());
+
+		player = new ComputerPlayer();
+		//if multiple persons or weapons not seen, should randomly select
+		for (Card crd : board.getDeck()) {
+			if (crd.getType() == CardType.WEAPON && crd.getName() != "Lead Pipe" && crd.getName() != "Knife" && crd.getName() != "Baseball Bat" )
+					player.addSeenCards(crd);
+			if (crd.getType() == CardType.PERSON && crd.getName() != "Colonel Mustard" && crd.getName() != "Mr. Green" && crd.getName() != "Mrs. White")
+				player.addSeenCards(crd);
+		}
+		
+		int pipe = 0, knife = 0, bat = 0, mustard = 0, green = 0, white = 0;;
+		for (int i=0; i<100; i++) {
+			String weaponGuess = player.createSuggestion().getWeapon().getName();
+			String personGuess = player.createSuggestion().getPerson().getName();
+			if (weaponGuess == "Lead Pipe")
+				pipe++;
+			else if (weaponGuess == "Knife")
+				knife++;
+			else if (weaponGuess == "Baseball Bat")
+				bat++;
+			
+			if (personGuess == "Colonel Mustard")
+				mustard++;
+			else if (personGuess == "Mr. Green")
+				green++;
+			else if (personGuess == "Mrs. White")
+				white++;
+		}
+		assertTrue(pipe > 15 && knife > 15 && bat > 15 && mustard>15 && green>15 && white>15);
 	}
 }
 
