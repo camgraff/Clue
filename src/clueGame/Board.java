@@ -336,12 +336,8 @@ public class Board {
 		return null;
 	}
 
-	public boolean checkAccusation(Solution accustion) {
-		return solution.equals(accustion);
-	}
-	
-	public BoardCell selectTarget(ComputerPlayer p) {
-		return p.pickLocation(targets);
+	public boolean checkAccusation(Solution accusation) {
+		return solution.equals(accusation);
 	}
 
 	public Color convertColor(String strColor) {
@@ -391,5 +387,9 @@ public class Board {
 
 	public ArrayList<Card> getDeck() {
 		return deck;
+	}
+	
+	public void setSolution(Solution newSolution) {
+		solution = newSolution;
 	}
 }

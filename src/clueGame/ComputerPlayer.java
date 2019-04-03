@@ -6,10 +6,14 @@ import java.util.Random;
 import java.util.Set;
 
 public class ComputerPlayer extends Player {
-	private Set<Character>visited = new HashSet<Character>();
-	
+	private BoardCell justVisited;
+
 	public ComputerPlayer(String playerName, int row, int column, Color color) {
 		super(playerName, row, column, color);
+	}
+
+	public ComputerPlayer() {
+		super();
 	}
 
 	public BoardCell pickLocation(Set<BoardCell> targets) {
@@ -19,22 +23,24 @@ public class ComputerPlayer extends Player {
 		//if no rooms in targets, choose random target 
 		for (BoardCell bcell : targetArray) {
 			if (bcell.isRoom()) {
-				if (!visited.contains(bcell.getInitial())) {
-					visited.add(bcell.getInitial());
+				if (justVisited != bcell) {
+					if (bcell.isRoom())
+						justVisited = bcell;
 					return bcell;
 				} 
 			}
 		}
-		visited.add(targetArray[random].getInitial());
+		if (targetArray[random].isRoom())
+			justVisited = targetArray[random];
 		return targetArray[random];
 	}
-	
-	public void makeAccusation() {
-		
+
+	public Solution makeAccusation(String person, String room, String weapon) {
+		return new Solution(new Card(), new Card(), new Card());
 	}
-	
+
 	public void createSuggestion() {
-		
+
 	}
-	
+
 }

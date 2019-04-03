@@ -10,7 +10,7 @@ public class Player {
 	private Color color;
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	
-	
+	public Player() {}
 	
 	public Player(String playerName, int row, int column, Color color) {
 		super();

@@ -5,6 +5,8 @@ public class Card {
 	private String cardName;
 	private clueGame.CardType cardType; 
 	
+	public Card() {}
+	
 	
 	public Card(String cardName, CardType cardType) {
 		super();

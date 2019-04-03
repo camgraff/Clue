@@ -6,6 +6,7 @@ public class Solution {
 	public Card room;
 	public Card weapon;
 	
+	
 	public Solution(Card p, Card r, Card w) {	
 		person = p;
 		room = r;
