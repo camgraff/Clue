@@ -84,6 +84,17 @@ public class Player {
 		return false;
 	}
 	
+	public boolean equals(Player other) {
+		if(playerName != other.getName())
+			return false;
+		if(row != other.getRow())
+			return false;
+		if(column != other.getColumn())
+			return false;
+		if(color != other.getColor())
+			return false;
+		return true;
+	}
 	
 		
 }

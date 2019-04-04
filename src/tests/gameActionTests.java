@@ -200,6 +200,7 @@ public class gameActionTests {
 	}
 	@Test
 	public void TestHandleSuggestion() {
+		//setup
 		Player[] players = board.getPlayers(); //load 6 players into array, 1st one in human
 		players[0].recieveCard(new Card("Thomas", CardType.PERSON));
 		players[1].recieveCard(new Card("Miss Scarlett", CardType.PERSON));
@@ -235,6 +236,8 @@ public class gameActionTests {
 		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[3])));
 		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[4])));
 		assertTrue(new Card("Thomas", CardType.PERSON).equals(board.handleSuggestion(diprovableByhPlr, players[5])));
+		
+		
 		
 		
 		
