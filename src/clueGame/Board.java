@@ -337,9 +337,9 @@ public class Board {
 
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
 		int indexOfAccuser = getIndexOfPlayer(players, accuser);
-		
+		System.out.println(indexOfAccuser);
 		if(accuser.isHuman()) {
-			for(int i = indexOfAccuser; i<players.length+indexOfAccuser; i++) {
+			for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
 				if(players[i%players.length].equals(accuser)) {
 					continue;
 				} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
@@ -347,7 +347,7 @@ public class Board {
 				}
 			}
 		} else {
-			for(int i = indexOfAccuser; i<players.length+indexOfAccuser; i++) {
+			for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
 				if(players[i].equals(accuser)) {
 					continue;
 				} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
