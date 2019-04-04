@@ -418,6 +418,16 @@ public class Board {
 	}
 	
 	public ArrayList<Card> getAllCards() {
+
 		return allCards;
+	}
+	
+	public int getIndexOfPlayer(Player[] players, Player p) {
+		for(int i=0; i<players.length; i++) {
+			if(p.equals(players[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 }
