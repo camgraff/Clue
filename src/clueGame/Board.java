@@ -338,26 +338,16 @@ public class Board {
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
 		int indexOfAccuser = getIndexOfPlayer(players, accuser);
 
-		if(accuser.isHuman()) {
-			for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
-				if(players[i%players.length].equals(accuser)) {
-					continue;
-				} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
-					return players[i%players.length].disproveSuggestion(suggestion);
-				}
+		for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
+			if(players[i%players.length].equals(accuser)) {
+				continue;
+			} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
+				return players[i%players.length].disproveSuggestion(suggestion);
 			}
-		} else {
-			for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
-				if(players[i].equals(accuser)) {
-					continue;
-				} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
-					return players[i%players.length].disproveSuggestion(suggestion);
-				}
-			}
+		
 		}
 		return null;
 	}
-
 	public boolean checkAccusation(Solution accusation) {
 		return solution.equals(accusation);
 	}
