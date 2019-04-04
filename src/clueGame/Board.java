@@ -337,7 +337,7 @@ public class Board {
 
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
 		int indexOfAccuser = getIndexOfPlayer(players, accuser);
-		System.out.println(indexOfAccuser);
+
 		if(accuser.isHuman()) {
 			for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
 				if(players[i%players.length].equals(accuser)) {
@@ -431,5 +431,15 @@ public class Board {
 			}
 		}
 		return -1;
+	}
+	
+	public boolean canBeDisproved(Solution suggestion,Player accuser) {
+		for(Player p : players) {
+			if(!p.equals(accuser)) {
+				if(p.disproveSuggestion(suggestion)!=null)
+					return true;
+			}
+		}
+		return false;
 	}
 }
