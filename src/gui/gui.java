@@ -25,8 +25,8 @@ public class gui extends JFrame {
 	public void createDiePanel() {
 		//diePanel.setLayout(new GridLayout(1, 2));
 		JLabel rollLabel = new JLabel("Roll");
-		JTextComponent rollTextField = new JTextField(20);
-		rollTextField.setPreferredSize(new Dimension(10, 10));
+		JTextComponent rollTextField = new JTextField();
+		rollTextField.setPreferredSize(new Dimension(60, 20));
 		rollTextField.setEditable(false);
 		diePanel.add(rollLabel);
 		diePanel.add(rollTextField);
@@ -34,9 +34,10 @@ public class gui extends JFrame {
 	}
 
 	public void createGuessPanel() {
-		guessPanel.setLayout(new GridLayout(2, 1));
+		//guessPanel.setLayout(new GridLayout(2, 1));
 		JLabel guessLabel = new JLabel("Guess");
 		JTextComponent guessTextField = new JTextField();
+		guessTextField.setPreferredSize(new Dimension(250, 20));
 		guessTextField.setEditable(false);
 		guessPanel.add(guessLabel);
 		guessPanel.add(guessTextField);
@@ -44,9 +45,10 @@ public class gui extends JFrame {
 	}
 
 	public void createResultPanel() {
-		resultPanel.setLayout(new GridLayout(1, 2));
+		//resultPanel.setLayout(new GridLayout(1, 2));
 		JLabel resultLabel = new JLabel("Response");
 		JTextComponent resultTextField = new JTextField();
+		resultTextField.setPreferredSize(new Dimension(200, 20));
 		resultTextField.setEditable(false);
 		resultPanel.add(resultLabel);
 		resultPanel.add(resultTextField);
