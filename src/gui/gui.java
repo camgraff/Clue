@@ -1,10 +1,13 @@
+//@authors: Cameron Graff, James Mach
 package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +16,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.JTextComponent;
 
+import clueGame.Board;
+
 public class gui extends JFrame {		
 	private JPanel controlPanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
@@ -20,6 +25,8 @@ public class gui extends JFrame {
 	private JPanel diePanel = new JPanel();
 	private JPanel guessPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
+	private JPanel board = Board.getInstance();
+	private JPanel topPanel = new JPanel();
 
 
 	public void createDiePanel() {
@@ -93,9 +100,11 @@ public class gui extends JFrame {
 		
 		controlPanel.add(buttonPanel);
 		controlPanel.add(bottomPanel);
-		add(controlPanel);
-
+		topPanel.add(controlPanel);
+		topPanel.add(board);
+		add(topPanel);
 	}
+
 
 
 

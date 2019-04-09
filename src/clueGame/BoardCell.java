@@ -1,6 +1,8 @@
 //@authors: Cameron Graff
 //@author: James Mach
 package clueGame;
+import java.awt.Graphics;
+
 import clueGame.DoorDirection;
 public class BoardCell {
 	private int row;
@@ -13,6 +15,10 @@ public class BoardCell {
 		this.row = row;
 		this.column = column;
 		this.initial = initial;
+	}
+	
+	public void draw(Graphics g) {
+		g.drawRect(column, row, 10, 10);
 	}
 
 	public int getRow() {
