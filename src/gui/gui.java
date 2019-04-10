@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.text.JTextComponent;
+import javax.swing.JOptionPane;
 
 import clueGame.Board;
 import javafx.scene.layout.Border;
@@ -32,6 +33,12 @@ public class gui extends JFrame {
 	private JPanel resultPanel = new JPanel();
 	private Board board = Board.getInstance();
 	private JPanel topPanel = new JPanel();
+	private JPanel peoplePanel = new JPanel();
+	private JPanel roomsPanel = new JPanel();
+	private JPanel weaponsPanel = new JPanel();
+	private JPanel personGuessPanel = new JPanel();
+	private JPanel roomGuessPanel = new JPanel();
+	private JPanel weaponGuessPanel = new JPanel();
 
 
 	public void createDiePanel() {
@@ -99,9 +106,6 @@ public class gui extends JFrame {
 		setSize(1000,800);
 		topPanel.setLayout(new BorderLayout());
 
-
-		
-
 		createBoardPanel();
 		createControlPanel();
 		topPanel.add(board);
@@ -109,15 +113,11 @@ public class gui extends JFrame {
 		add(topPanel);
 	
 
-
-
-
 	}
 
 	public void createBoardPanel() {
 		board.setConfigFiles("rooms.csv", "legend.txt");
 		board.initialize();
-
 	}
 	
 	public void createControlPanel() {
@@ -126,6 +126,33 @@ public class gui extends JFrame {
 		controlPanel.setLayout(new GridLayout(2, 1));		
 		controlPanel.add(buttonPanel);
 		controlPanel.add(bottomPanel);
+	}
+	
+	public void createPeoplePanel() {
+		
+	}
+	
+	public void createRoomsPanel() {
+		
+	}
+	
+	public void createWeaponsPanel() {
+		
+	}
+	
+	public void createDetectiveNotes() {
+		
+	}
+	
+	public void createPersonGuessPanel() {
+		
+	}
+	
+	public void createRoomGuessPanel() {
+		
+	}
+	
+	public void createWeaponGuessPanel() {
 		
 	}
 
@@ -137,6 +164,5 @@ public class gui extends JFrame {
 		gui.createLayout();
 		gui.createBoardPanel();
 		gui.setVisible(true);
-
 	}
 }
