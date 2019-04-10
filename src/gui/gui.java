@@ -100,17 +100,14 @@ public class gui extends JFrame {
 		topPanel.setLayout(new BorderLayout());
 
 
-		createButtonPanel();
-		createBottomPanel();
+		
 
 		createBoardPanel();
+		createControlPanel();
 		topPanel.add(board);
-
-		controlPanel.setLayout(new GridLayout(2, 1));		
-		controlPanel.add(buttonPanel);
-		controlPanel.add(bottomPanel);
 		topPanel.add(controlPanel, BorderLayout.SOUTH);
 		add(topPanel);
+	
 
 
 
@@ -121,6 +118,15 @@ public class gui extends JFrame {
 		board.setConfigFiles("rooms.csv", "legend.txt");
 		board.initialize();
 
+	}
+	
+	public void createControlPanel() {
+		createButtonPanel();
+		createBottomPanel();
+		controlPanel.setLayout(new GridLayout(2, 1));		
+		controlPanel.add(buttonPanel);
+		controlPanel.add(bottomPanel);
+		
 	}
 
 
