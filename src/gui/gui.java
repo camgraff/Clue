@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,8 +21,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.text.JTextComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
 
-import clueGame.Board;
+import clueGame.*;
 import javafx.scene.layout.Border;
 
 public class gui extends JFrame {		
@@ -31,7 +34,6 @@ public class gui extends JFrame {
 	private JPanel diePanel = new JPanel();
 	private JPanel guessPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
-	private Board board = Board.getInstance();
 	private JPanel topPanel = new JPanel();
 	private JPanel peoplePanel = new JPanel();
 	private JPanel roomsPanel = new JPanel();
@@ -39,6 +41,11 @@ public class gui extends JFrame {
 	private JPanel personGuessPanel = new JPanel();
 	private JPanel roomGuessPanel = new JPanel();
 	private JPanel weaponGuessPanel = new JPanel();
+	
+	private Board board = Board.getInstance();
+	private ArrayList<Card> deck = board.getDeck();
+	
+	
 
 
 	public void createDiePanel() {
@@ -129,15 +136,49 @@ public class gui extends JFrame {
 	}
 	
 	public void createPeoplePanel() {
+		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
 		
+		ArrayList<JCheckBox> people = new ArrayList<>();
+		for(Card c : deck) {
+			if(c.getType() == CardType.PERSON) {
+				people.add(new JCheckBox(c.getName()));
+			}
+		}
+		
+		for(JCheckBox cb : people) {
+			peoplePanel.add(cb);
+		}
 	}
 	
 	public void createRoomsPanel() {
+		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		
+		ArrayList<JCheckBox> rooms = new ArrayList<>();
+		for(Card c : deck) {
+			if(c.getType() == CardType.ROOM) {
+				rooms.add(new JCheckBox(c.getName()));
+			}
+		}
+		
+		for(JCheckBox cb : rooms) {
+			peoplePanel.add(cb);
+		}
 		
 	}
 	
 	public void createWeaponsPanel() {
+		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
 		
+		ArrayList<JCheckBox> weapons = new ArrayList<>();
+		for(Card c : deck) {
+			if(c.getType() == CardType.WEAPON) {
+				weapons.add(new JCheckBox(c.getName()));
+			}
+		}
+		
+		for(JCheckBox cb : weapons) {
+			peoplePanel.add(cb);
+		}
 	}
 	
 	public void createDetectiveNotes() {
@@ -155,8 +196,6 @@ public class gui extends JFrame {
 	public void createWeaponGuessPanel() {
 		
 	}
-
-
 
 
 	public static void main(String[] args) {
