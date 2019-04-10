@@ -3,6 +3,7 @@
 package clueGame;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
@@ -16,6 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 
 public class Board extends JPanel {
 
@@ -49,8 +51,13 @@ public class Board extends JPanel {
 		super.paintComponent(g);
 		for (int i=0; i<numRows; i++) {
 			for (int j=0; j<numColumns; j++) {
-				board[i][j].draw(g);
+				board[i][j].draw((Graphics2D )g);
+
 			}
+		}
+		
+		for (Player plr : players) {
+			plr.draw((Graphics2D) g);
 		}
 	}
 
@@ -235,7 +242,7 @@ public class Board extends JPanel {
 					board[row][col].setDoorDirection(DoorDirection.DOWN);
 					break;
 				case 'N' :
-					continue;
+					board[row][col].setIsNameCell();;
 				default:
 					break;
 				}

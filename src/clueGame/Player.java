@@ -1,12 +1,15 @@
 package clueGame;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class Player {
+	private static final int SIZE = 25;
 	private String playerName;
 	private int row;
 	private int column;
@@ -21,6 +24,14 @@ public class Player {
 		this.row = row;
 		this.column = column;
 		this.color = color;
+	}
+	
+	public void draw(Graphics2D g) {
+		g.setColor(color);
+		g.fillOval(column*SIZE+3, row*SIZE+3, SIZE-5, SIZE-5);
+		g.setStroke(new BasicStroke(1));
+		g.setColor(color.BLACK);
+		g.drawOval(column*SIZE+3, row*SIZE+3, SIZE-5, SIZE-5);
 	}
 
 

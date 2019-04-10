@@ -1,11 +1,14 @@
 //@authors: Cameron Graff, James Mach
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -14,9 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.text.JTextComponent;
 
 import clueGame.Board;
+import javafx.scene.layout.Border;
 
 public class gui extends JFrame {		
 	private JPanel controlPanel = new JPanel();
@@ -25,7 +30,7 @@ public class gui extends JFrame {
 	private JPanel diePanel = new JPanel();
 	private JPanel guessPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
-	private JPanel board = Board.getInstance();
+	private Board board = Board.getInstance();
 	private JPanel topPanel = new JPanel();
 
 
@@ -62,7 +67,7 @@ public class gui extends JFrame {
 		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
 
 	}
-	
+
 	public void createButtonPanel() {
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");		
@@ -77,7 +82,7 @@ public class gui extends JFrame {
 		buttonPanel.add(nextPlayer);
 		buttonPanel.add(makeAccusation);
 	}
-	
+
 	public void createBottomPanel() {
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		createDiePanel();
@@ -88,21 +93,34 @@ public class gui extends JFrame {
 		bottomPanel.add(resultPanel);
 
 	}
-	
-	private void createLayout() {
+
+	public void createLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		controlPanel.setLayout(new GridLayout(2, 1));		
-		setSize(800,250);
-		
+		setSize(1000,800);
+		topPanel.setLayout(new BorderLayout());
+
+
 		createButtonPanel();
 		createBottomPanel();
-		
-		
+
+		createBoardPanel();
+		topPanel.add(board);
+
+		controlPanel.setLayout(new GridLayout(2, 1));		
 		controlPanel.add(buttonPanel);
 		controlPanel.add(bottomPanel);
-		topPanel.add(controlPanel);
-		topPanel.add(board);
+		topPanel.add(controlPanel, BorderLayout.SOUTH);
 		add(topPanel);
+
+
+
+
+	}
+
+	public void createBoardPanel() {
+		board.setConfigFiles("rooms.csv", "legend.txt");
+		board.initialize();
+
 	}
 
 
@@ -111,6 +129,7 @@ public class gui extends JFrame {
 	public static void main(String[] args) {
 		gui gui = new gui();
 		gui.createLayout();
+		gui.createBoardPanel();
 		gui.setVisible(true);
 
 	}
