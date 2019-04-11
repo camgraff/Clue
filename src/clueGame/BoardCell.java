@@ -44,13 +44,13 @@ public class BoardCell {
 				g.drawLine(column*SIZE+2, row*SIZE+2, (column+1)*(SIZE)+2, row*(SIZE)+2);
 				break;
 			case RIGHT:
-				g.drawLine((column+1)*SIZE-2, row*SIZE+2, (column+1)*(SIZE)-2, (row+1)*(SIZE)+2);
+				g.drawLine((column+1)*SIZE-2, row*SIZE+2, (column+1)*(SIZE)-2, (row+1)*(SIZE)-2);
 				break;
 			case LEFT:
-				g.drawLine((column)*SIZE+2, (row)*SIZE+2, (column)*(SIZE)+2, (row+1)*(SIZE)+2);
+				g.drawLine((column)*SIZE+2, (row)*SIZE+2, (column)*(SIZE)+2, (row+1)*(SIZE)-2);
 				break;
 			case DOWN:
-				g.drawLine(column*SIZE+2, (row+1)*(SIZE)-2, (column+1)*(SIZE)+2, (row+1)*(SIZE)-2);
+				g.drawLine(column*SIZE+2, (row+1)*(SIZE)-2, (column+1)*(SIZE)-2, (row+1)*(SIZE)-2);
 				break;
 			}
 		}
