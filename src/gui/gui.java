@@ -41,12 +41,6 @@ public class gui extends JFrame {
 	private JPanel guessPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
 	private JPanel topPanel = new JPanel();
-	private JPanel peoplePanel = new JPanel();
-	private JPanel roomsPanel = new JPanel();
-	private JPanel weaponsPanel = new JPanel();
-	private JPanel personGuessPanel = new JPanel();
-	private JPanel roomGuessPanel = new JPanel();
-	private JPanel weaponGuessPanel = new JPanel();
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
 
@@ -54,9 +48,7 @@ public class gui extends JFrame {
 	private ArrayList<Card> deck;
 
 
-
 	public void createDiePanel() {
-		//diePanel.setLayout(new GridLayout(1, 2));
 		JLabel rollLabel = new JLabel("Roll");
 		JTextComponent rollTextField = new JTextField();
 		rollTextField.setPreferredSize(new Dimension(60, 20));
@@ -67,7 +59,6 @@ public class gui extends JFrame {
 	}
 
 	public void createGuessPanel() {
-		//guessPanel.setLayout(new GridLayout(2, 1));
 		JLabel guessLabel = new JLabel("Guess");
 		JTextComponent guessTextField = new JTextField();
 		guessTextField.setPreferredSize(new Dimension(250, 20));
@@ -78,7 +69,6 @@ public class gui extends JFrame {
 	}
 
 	public void createResultPanel() {
-		//resultPanel.setLayout(new GridLayout(1, 2));
 		JLabel resultLabel = new JLabel("Response");
 		JTextComponent resultTextField = new JTextField();
 		resultTextField.setPreferredSize(new Dimension(200, 20));
@@ -104,6 +94,7 @@ public class gui extends JFrame {
 		buttonPanel.add(makeAccusation);
 	}
 
+
 	public void createBottomPanel() {
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		createDiePanel();
@@ -115,6 +106,7 @@ public class gui extends JFrame {
 
 	}
 
+	//creates gui
 	public void createLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1000,800);
@@ -130,7 +122,6 @@ public class gui extends JFrame {
 		add(topPanel);
 
 		createDetectiveNotes();
-
 
 	}
 
@@ -148,110 +139,68 @@ public class gui extends JFrame {
 		controlPanel.add(bottomPanel);
 	}
 
-	public void createPeoplePanel() {
-		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-
-		ArrayList<JCheckBox> people = new ArrayList<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.PERSON) {
-				people.add(new JCheckBox(c.getName()));
-			}
-		}
-
-		for(JCheckBox cb : people) {
-			peoplePanel.add(cb);
-		}
-	}
-
-	public void createRoomsPanel() {	
-		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-
-		ArrayList<JCheckBox> rooms = new ArrayList<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.ROOM) {
-				rooms.add(new JCheckBox(c.getName()));
-			}
-		}
-
-		for(JCheckBox cb : rooms) {
-			roomsPanel.add(cb);
-		}
-
-	}
-
-	public void createWeaponsPanel() {
-		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-
-		ArrayList<JCheckBox> weapons = new ArrayList<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.WEAPON) {
-				weapons.add(new JCheckBox(c.getName()));
-			}
-		}
-
-		for(JCheckBox cb : weapons) {
-			weaponsPanel.add(cb);
-		}
-	}
-
+	//create detective notes to keep track of seen cards/guesses
 	public void createDetectiveNotes() {
-		detectiveNotes = new JDialog(this, "Detective Notes");
-		createPeoplePanel();
-		createRoomsPanel();
-		createWeaponsPanel();
-		createPersonGuessPanel();
-		createRoomGuessPanel();
-		createWeaponGuessPanel();
+		JPanel peoplePanel = new JPanel();
+		JPanel roomsPanel = new JPanel();
+		JPanel weaponsPanel = new JPanel();
+		JPanel personGuessPanel = new JPanel();
+		JPanel roomGuessPanel = new JPanel();
+		JPanel weaponGuessPanel = new JPanel();
+		
+		JComboBox<String> guessPerson = new JComboBox<String>();
+		JComboBox<String> guessRoom = new JComboBox<String>();
+		JComboBox<String> guessWeapon = new JComboBox<String>();
 
+		detectiveNotes = new JDialog(this, "Detective Notes");
 		detectiveNotes.setTitle("Detective Notes");
 		detectiveNotes.setSize(600,500);
 		detectiveNotes.setLayout(new GridLayout(3, 2));
+
+		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
+		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
+		personGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Person Guess"));
+		roomGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
+		weaponGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
+
+		for(Card c : deck) {
+			switch(c.getType()) {
+			case PERSON:
+				peoplePanel.add(new JCheckBox(c.getName()));
+				guessPerson.addItem(c.getName());
+				break;
+
+			case ROOM:
+				roomsPanel.add(new JCheckBox(c.getName()));
+				guessRoom.addItem(c.getName());
+				break;
+
+			case WEAPON:
+				weaponsPanel.add(new JCheckBox(c.getName()));
+				guessWeapon.addItem(c.getName());
+				break;
+			}
+		}
+		
+		personGuessPanel.add(guessPerson);
+		roomGuessPanel.add(guessRoom);
+		weaponGuessPanel.add(guessWeapon);
+		
 		detectiveNotes.add(peoplePanel);
 		detectiveNotes.add(personGuessPanel);
 		detectiveNotes.add(roomsPanel);
 		detectiveNotes.add(roomGuessPanel);
 		detectiveNotes.add(weaponsPanel);
 		detectiveNotes.add(weaponGuessPanel);
-		//detectiveNotes.setVisible(true);
-	}
 
-	public void createPersonGuessPanel() {
-		JComboBox<String> guessPeople = new JComboBox<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.PERSON) {
-				guessPeople.addItem(c.getName());
-			}
-		}
-		personGuessPanel.add(guessPeople);
-		personGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Person Guess"));
 
 	}
 
-	public void createRoomGuessPanel() {
-		JComboBox<String> guessRoom = new JComboBox<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.ROOM) {
-				guessRoom.addItem(c.getName());
-			}
-		}
-		roomGuessPanel.add(guessRoom);
-		roomGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
-	}
-
-	public void createWeaponGuessPanel() {
-		JComboBox<String> guessWeapon = new JComboBox<>();
-		for(Card c : deck) {
-			if(c.getType() == CardType.WEAPON) {
-				guessWeapon.addItem(c.getName());
-			}
-		}
-		weaponGuessPanel.add(guessWeapon);
-		weaponGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
-	}
-
+	
 	private void createMenuBar() {
 		JMenu fileMenu = new JMenu("File");
-		
+
 		//create detectives notes menu item
 		JMenuItem detNotesButton = new JMenuItem("Detective notes");
 		class detNotesButtonListener implements ActionListener {
@@ -260,7 +209,7 @@ public class gui extends JFrame {
 			}
 		}
 		detNotesButton.addActionListener(new detNotesButtonListener());
-		
+
 		//create exit menu item
 		JMenuItem exit = new JMenuItem("Exit");
 		class exitButtonListener implements ActionListener {
