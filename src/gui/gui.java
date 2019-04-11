@@ -17,6 +17,9 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
@@ -45,10 +48,11 @@ public class gui extends JFrame {
 	private JPanel roomGuessPanel = new JPanel();
 	private JPanel weaponGuessPanel = new JPanel();
 	private JDialog detectiveNotes;
-	
+	private JMenuBar menu = new JMenuBar();
+
 	private Board board = Board.getInstance();
 	private ArrayList<Card> deck;
-	
+
 
 
 	public void createDiePanel() {
@@ -116,15 +120,17 @@ public class gui extends JFrame {
 		setSize(1000,800);
 		topPanel.setLayout(new BorderLayout());
 
+		createMenuBar();
+		setJMenuBar(menu);
+
 		createBoardPanel();
 		createControlPanel();
 		topPanel.add(board);
 		topPanel.add(controlPanel, BorderLayout.SOUTH);
 		add(topPanel);
-		
+
 		createDetectiveNotes();
-		//add(detectiveNotes);
-	
+
 
 	}
 
@@ -133,7 +139,7 @@ public class gui extends JFrame {
 		board.initialize();
 		deck = board.getDeck();
 	}
-	
+
 	public void createControlPanel() {
 		createButtonPanel();
 		createBottomPanel();
@@ -141,53 +147,53 @@ public class gui extends JFrame {
 		controlPanel.add(buttonPanel);
 		controlPanel.add(bottomPanel);
 	}
-	
+
 	public void createPeoplePanel() {
 		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
-		
+
 		ArrayList<JCheckBox> people = new ArrayList<>();
 		for(Card c : deck) {
 			if(c.getType() == CardType.PERSON) {
 				people.add(new JCheckBox(c.getName()));
 			}
 		}
-		
+
 		for(JCheckBox cb : people) {
 			peoplePanel.add(cb);
 		}
 	}
-	
+
 	public void createRoomsPanel() {	
 		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
-		
+
 		ArrayList<JCheckBox> rooms = new ArrayList<>();
 		for(Card c : deck) {
 			if(c.getType() == CardType.ROOM) {
 				rooms.add(new JCheckBox(c.getName()));
 			}
 		}
-		
+
 		for(JCheckBox cb : rooms) {
 			roomsPanel.add(cb);
 		}
-		
+
 	}
-	
+
 	public void createWeaponsPanel() {
 		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-		
+
 		ArrayList<JCheckBox> weapons = new ArrayList<>();
 		for(Card c : deck) {
 			if(c.getType() == CardType.WEAPON) {
 				weapons.add(new JCheckBox(c.getName()));
 			}
 		}
-		
+
 		for(JCheckBox cb : weapons) {
 			weaponsPanel.add(cb);
 		}
 	}
-	
+
 	public void createDetectiveNotes() {
 		detectiveNotes = new JDialog(this, "Detective Notes");
 		createPeoplePanel();
@@ -196,7 +202,7 @@ public class gui extends JFrame {
 		createPersonGuessPanel();
 		createRoomGuessPanel();
 		createWeaponGuessPanel();
-		
+
 		detectiveNotes.setTitle("Detective Notes");
 		detectiveNotes.setSize(600,500);
 		detectiveNotes.setLayout(new GridLayout(3, 2));
@@ -208,7 +214,7 @@ public class gui extends JFrame {
 		detectiveNotes.add(weaponGuessPanel);
 		//detectiveNotes.setVisible(true);
 	}
-	
+
 	public void createPersonGuessPanel() {
 		JComboBox<String> guessPeople = new JComboBox<>();
 		for(Card c : deck) {
@@ -218,9 +224,9 @@ public class gui extends JFrame {
 		}
 		personGuessPanel.add(guessPeople);
 		personGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Person Guess"));
-		
+
 	}
-	
+
 	public void createRoomGuessPanel() {
 		JComboBox<String> guessRoom = new JComboBox<>();
 		for(Card c : deck) {
@@ -231,7 +237,7 @@ public class gui extends JFrame {
 		roomGuessPanel.add(guessRoom);
 		roomGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
 	}
-	
+
 	public void createWeaponGuessPanel() {
 		JComboBox<String> guessWeapon = new JComboBox<>();
 		for(Card c : deck) {
@@ -242,19 +248,39 @@ public class gui extends JFrame {
 		weaponGuessPanel.add(guessWeapon);
 		weaponGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
 	}
-	
-	class FileButtonListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			detectiveNotes.setVisible(true);
+
+	private void createMenuBar() {
+		JMenu fileMenu = new JMenu("File");
+		
+		//create detectives notes menu item
+		JMenuItem detNotesButton = new JMenuItem("Detective notes");
+		class detNotesButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				detectiveNotes.setVisible(true);
+			}
 		}
+		detNotesButton.addActionListener(new detNotesButtonListener());
+		
+		//create exit menu item
+		JMenuItem exit = new JMenuItem("Exit");
+		class exitButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		}
+		exit.addActionListener(new exitButtonListener());
+		fileMenu.add(detNotesButton);
+		fileMenu.add(exit);
+		menu.add(fileMenu);
+
 	}
+
+
 
 
 	public static void main(String[] args) {
 		gui gui = new gui();
 		gui.createLayout();
-		
-		
 		gui.setVisible(true);
 	}
 }
