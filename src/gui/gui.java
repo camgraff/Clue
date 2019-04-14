@@ -5,6 +5,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -21,8 +22,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.text.JTextComponent;
@@ -41,6 +44,8 @@ public class gui extends JFrame {
 	private JPanel guessPanel = new JPanel();
 	private JPanel resultPanel = new JPanel();
 	private JPanel topPanel = new JPanel();
+	private JPanel cardPanel = new JPanel();
+	private JPanel boardPanel = new JPanel();
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
 
@@ -116,19 +121,33 @@ public class gui extends JFrame {
 		setJMenuBar(menu);
 
 		createBoardPanel();
-		createControlPanel();
-		topPanel.add(board);
+		createControlPanel();	
+		createCardDisplay();
+
+		topPanel.add(boardPanel);
 		topPanel.add(controlPanel, BorderLayout.SOUTH);
 		add(topPanel);
 
 		createDetectiveNotes();
+		
+		setVisible(true);
+		
+		JOptionPane.showMessageDialog(this, "You are player, press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+
 
 	}
 
 	public void createBoardPanel() {
 		board.setConfigFiles("rooms.csv", "legend.txt");
 		board.initialize();
+		board.setSize(100,100);
 		deck = board.getDeck();
+		
+		boardPanel.setLayout(new BorderLayout());
+		boardPanel.add(board, BorderLayout.CENTER);
+		boardPanel.add(cardPanel, BorderLayout.LINE_END);
+		boardPanel.setPreferredSize(boardPanel.getPreferredSize());
+		
 	}
 
 	public void createControlPanel() {
@@ -223,6 +242,50 @@ public class gui extends JFrame {
 		menu.add(fileMenu);
 
 	}
+	
+	public void createCardDisplay() {
+		JPanel peopleCardPanel = new JPanel();
+		JPanel roomCardPanel = new JPanel();
+		JPanel weaponCardPanel = new JPanel();
+		JTextComponent peopleTextField = new JTextArea(10,10);
+		JTextComponent roomTextField = new JTextArea(10,10);
+		JTextComponent weaponTextField = new JTextArea(10,10);
+		
+		cardPanel.setLayout(new GridLayout(3, 1));
+		cardPanel.setPreferredSize(new Dimension(200,100));
+		cardPanel.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
+		peopleCardPanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
+		roomCardPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		weaponCardPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
+		peopleTextField.setEditable(false);
+		roomTextField.setEditable(false);
+		weaponTextField.setEditable(false);
+		peopleTextField.setBorder(new LineBorder(Color.BLACK));
+		roomTextField.setBorder(new LineBorder(Color.BLACK));
+		weaponTextField.setBorder(new LineBorder(Color.BLACK));
+
+		
+		for (Card crd : board.getPlayer(1).getHand()) {
+			switch (crd.getType()) {
+			case PERSON:
+				peopleTextField.setText(peopleTextField.getText() + "\n" + crd.getName());
+				break;
+			case ROOM:
+				roomTextField.setText(roomTextField.getText() + "\n" + crd.getName());
+				break;
+			case WEAPON: 
+				weaponTextField.setText(weaponTextField.getText() + "\n" + crd.getName());
+				break;
+			}
+		}
+		
+		peopleCardPanel.add(peopleTextField);
+		roomCardPanel.add(roomTextField);
+		weaponCardPanel.add(weaponTextField);
+		cardPanel.add(peopleCardPanel);
+		cardPanel.add(roomCardPanel);
+		cardPanel.add(weaponCardPanel);
+	}
 
 
 
@@ -230,6 +293,5 @@ public class gui extends JFrame {
 	public static void main(String[] args) {
 		gui gui = new gui();
 		gui.createLayout();
-		gui.setVisible(true);
 	}
 }
