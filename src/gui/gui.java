@@ -29,6 +29,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import clueGame.*;
 import javafx.scene.layout.Border;
@@ -122,6 +123,7 @@ public class gui extends JFrame {
 		add(topPanel);
 
 		createDetectiveNotes();
+		createSplashScreen();
 
 	}
 
@@ -222,6 +224,10 @@ public class gui extends JFrame {
 		fileMenu.add(exit);
 		menu.add(fileMenu);
 
+	}
+	
+	public void createSplashScreen() {
+		JOptionPane.showMessageDialog(this, "You are "+board.getPlayer(1).getName()+", press NextPlayer to begin play", "Welcome to Clue",JOptionPane.INFORMATION_MESSAGE);
 	}
 
 
