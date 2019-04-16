@@ -32,6 +32,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 
 import clueGame.*;
 import javafx.scene.layout.Border;
@@ -48,10 +49,9 @@ public class gui extends JFrame {
 	private JPanel boardPanel = new JPanel();
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
+	private JPanel playerHand = new JPanel();
 
 	private Board board = Board.getInstance();
-	private ArrayList<Card> deck;
-
 
 	public void createDiePanel() {
 		JLabel rollLabel = new JLabel("Roll");
@@ -81,7 +81,6 @@ public class gui extends JFrame {
 		resultPanel.add(resultLabel);
 		resultPanel.add(resultTextField);
 		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
-
 	}
 
 	public void createButtonPanel() {
@@ -99,7 +98,6 @@ public class gui extends JFrame {
 		buttonPanel.add(makeAccusation);
 	}
 
-
 	public void createBottomPanel() {
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		createDiePanel();
@@ -108,7 +106,6 @@ public class gui extends JFrame {
 		bottomPanel.add(diePanel);
 		bottomPanel.add(guessPanel);
 		bottomPanel.add(resultPanel);
-
 	}
 
 	//creates gui
@@ -129,27 +126,27 @@ public class gui extends JFrame {
 		add(topPanel);
 
 		createDetectiveNotes();
-		
-		setVisible(true);
-		
-		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(1).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
+		setVisible(true);
+
+		//splash screen
+		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(1).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
+	//board panel contains board and human player's card display
 	public void createBoardPanel() {
 		board.setConfigFiles("rooms.csv", "legend.txt");
 		board.initialize();
 		board.setSize(100,100);
-		deck = board.getDeck();
-		
+
 		boardPanel.setLayout(new BorderLayout());
 		boardPanel.add(board, BorderLayout.CENTER);
 		boardPanel.add(cardPanel, BorderLayout.LINE_END);
 		boardPanel.setPreferredSize(boardPanel.getPreferredSize());
-		
 	}
 
+	//control panel contains all buttons
 	public void createControlPanel() {
 		createButtonPanel();
 		createBottomPanel();
@@ -166,7 +163,7 @@ public class gui extends JFrame {
 		JPanel personGuessPanel = new JPanel();
 		JPanel roomGuessPanel = new JPanel();
 		JPanel weaponGuessPanel = new JPanel();
-		
+
 		JComboBox<String> guessPerson = new JComboBox<String>();
 		JComboBox<String> guessRoom = new JComboBox<String>();
 		JComboBox<String> guessWeapon = new JComboBox<String>();
@@ -183,7 +180,7 @@ public class gui extends JFrame {
 		roomGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
 		weaponGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
 
-		for(Card c : deck) {
+		for(Card c : board.getAllCards()) {
 			switch(c.getType()) {
 			case PERSON:
 				peoplePanel.add(new JCheckBox(c.getName()));
@@ -201,22 +198,21 @@ public class gui extends JFrame {
 				break;
 			}
 		}
-		
+
 		personGuessPanel.add(guessPerson);
 		roomGuessPanel.add(guessRoom);
 		weaponGuessPanel.add(guessWeapon);
-		
+
 		detectiveNotes.add(peoplePanel);
 		detectiveNotes.add(personGuessPanel);
 		detectiveNotes.add(roomsPanel);
 		detectiveNotes.add(roomGuessPanel);
 		detectiveNotes.add(weaponsPanel);
 		detectiveNotes.add(weaponGuessPanel);
-
-
 	}
 
-	
+
+	//menu bar is used to access detective notes and exit
 	private void createMenuBar() {
 		JMenu fileMenu = new JMenu("File");
 
@@ -240,9 +236,9 @@ public class gui extends JFrame {
 		fileMenu.add(detNotesButton);
 		fileMenu.add(exit);
 		menu.add(fileMenu);
-
 	}
-	
+
+	//display player's current hand
 	public void createCardDisplay() {
 		JPanel peopleCardPanel = new JPanel();
 		JPanel roomCardPanel = new JPanel();
@@ -250,7 +246,7 @@ public class gui extends JFrame {
 		JTextComponent peopleTextField = new JTextArea(10,10);
 		JTextComponent roomTextField = new JTextArea(10,10);
 		JTextComponent weaponTextField = new JTextArea(10,10);
-		
+
 		cardPanel.setLayout(new GridLayout(3, 1));
 		cardPanel.setPreferredSize(new Dimension(200,100));
 		cardPanel.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
@@ -264,7 +260,6 @@ public class gui extends JFrame {
 		roomTextField.setBorder(new LineBorder(Color.BLACK));
 		weaponTextField.setBorder(new LineBorder(Color.BLACK));
 
-		
 		for (Card crd : board.getPlayer(1).getHand()) {
 			switch (crd.getType()) {
 			case PERSON:
@@ -275,10 +270,9 @@ public class gui extends JFrame {
 				break;
 			case WEAPON: 
 				weaponTextField.setText(weaponTextField.getText() + "\n" + crd.getName());
-				break;
 			}
 		}
-		
+
 		peopleCardPanel.add(peopleTextField);
 		roomCardPanel.add(roomTextField);
 		weaponCardPanel.add(weaponTextField);
@@ -286,9 +280,6 @@ public class gui extends JFrame {
 		cardPanel.add(roomCardPanel);
 		cardPanel.add(weaponCardPanel);
 	}
-
-
-
 
 	public static void main(String[] args) {
 		gui gui = new gui();

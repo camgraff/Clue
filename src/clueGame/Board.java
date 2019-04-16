@@ -36,8 +36,7 @@ public class Board extends JPanel {
 	private Player[] players;
 	private ArrayList<Card> deck;
 	private static Solution solution;
-	
-	public ArrayList<Card> allCards;
+	private ArrayList<Card> allCards;
 
 
 	private Board() {}
@@ -454,4 +453,5 @@ public class Board extends JPanel {
 		}
 		return false;
 	}
+	
 }
