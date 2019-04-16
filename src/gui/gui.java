@@ -132,7 +132,7 @@ public class gui extends JFrame {
 		
 		setVisible(true);
 		
-		JOptionPane.showMessageDialog(this, "You are player, press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(1).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
 
 	}
