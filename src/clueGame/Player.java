@@ -15,6 +15,7 @@ public class Player {
 	private int column;
 	private Color color;
 	private ArrayList<Card> hand = new ArrayList<Card>();
+	BoardCell currentCell;
 
 	public Player() {}
 	
@@ -105,6 +106,10 @@ public class Player {
 		if(color != other.getColor())
 			return false;
 		return true;
+	}
+	
+	public void setCurrentCell(BoardCell b) {
+		currentCell = b;
 	}
 	
 		

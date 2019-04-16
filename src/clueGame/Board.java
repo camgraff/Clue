@@ -166,6 +166,7 @@ public class Board extends JPanel {
 			} else {
 				players[i] = new ComputerPlayer(name, Integer.valueOf(row), Integer.valueOf(column) , convertColor(color));
 			}
+			players[i].setCurrentCell(board[Integer.valueOf(row)][Integer.valueOf(column)]);
 			deck.add(new Card(name, CardType.PERSON));
 		}
 	}
@@ -372,6 +373,18 @@ public class Board extends JPanel {
 	public boolean checkAccusation(Solution accusation) {
 		return solution.equals(accusation);
 	}
+	
+	public void makeMove(Player player, int dieRoll) {
+		if (player.isHuman()) {
+			
+		} else {
+			calcTargets(player.getRow(), player.getColumn(), dieRoll);
+			BoardCell moveTo = ((ComputerPlayer) player).pickLocation(targets);
+			player.setRow(moveTo.getRow());
+			player.setColumn(moveTo.getColumn());
+			player.setCurrentCell(moveTo);
+		}
+	}
 
 	public Color convertColor(String strColor) {
 		Color color;
@@ -418,8 +431,8 @@ public class Board extends JPanel {
 	}
 
 	public Player getPlayer(int p) {
-		if (p == 1) return (HumanPlayer) players[p-1];
-		else return (ComputerPlayer) players[p-1];
+		if (p == 0) return (HumanPlayer) players[p];
+		else return (ComputerPlayer) players[p];
 	}
 
 	public ArrayList<Card> getDeck() {

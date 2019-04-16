@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -37,7 +38,7 @@ import javax.swing.JOptionPane;
 import clueGame.*;
 import javafx.scene.layout.Border;
 
-public class gui extends JFrame {		
+public class ClueGame extends JFrame {		
 	private JPanel controlPanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
 	private JPanel bottomPanel = new JPanel();
@@ -50,12 +51,16 @@ public class gui extends JFrame {
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
 	private JPanel playerHand = new JPanel();
-
+	private JTextComponent playerNameField = new JTextField(20);
+	JTextComponent rollTextField = new JTextField();
+	
 	private Board board = Board.getInstance();
+	private boolean hasMoved = true;
+	private int currentPlayerIndex = 0;
 
 	public void createDiePanel() {
 		JLabel rollLabel = new JLabel("Roll");
-		JTextComponent rollTextField = new JTextField();
+		
 		rollTextField.setPreferredSize(new Dimension(60, 20));
 		rollTextField.setEditable(false);
 		diePanel.add(rollLabel);
@@ -85,9 +90,16 @@ public class gui extends JFrame {
 
 	public void createButtonPanel() {
 		JPanel turnPanel = new JPanel();
-		JLabel whoseTurn = new JLabel("Whose turn?");		
+		JLabel whoseTurn = new JLabel("Whose turn?");
+
 		JButton nextPlayer = new JButton("Next player");		
-		JTextComponent playerNameField = new JTextField(20);
+		class nextPlayerButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				hasMoved = false;
+			}
+		}
+		nextPlayer.addActionListener(new nextPlayerButtonListener());
+
 		playerNameField.setEditable(false);
 		JButton makeAccusation= new JButton("Make an accusation");
 		buttonPanel.setLayout(new GridLayout(1, 3));		
@@ -130,7 +142,7 @@ public class gui extends JFrame {
 		setVisible(true);
 
 		//splash screen
-		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(1).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(0).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
@@ -281,8 +293,31 @@ public class gui extends JFrame {
 		cardPanel.add(weaponCardPanel);
 	}
 
+	public void doNextPlayerTurn() {
+		Random rand = new Random();
+		if (!hasMoved) {
+			int dieRoll = rand.nextInt(6) + 1;
+			rollTextField.setText(Integer.toString(dieRoll));
+			Player currentPlayer = board.getPlayer(currentPlayerIndex);
+			currentPlayerIndex = (currentPlayerIndex + 1) % 6;
+			playerNameField.setText(currentPlayer.getName());
+			board.makeMove(currentPlayer, dieRoll);
+			board.repaint();
+			hasMoved = true;
+		}
+
+	}
+	
+	public void playGame() {
+		doNextPlayerTurn();
+	}
+
 	public static void main(String[] args) {
-		gui gui = new gui();
-		gui.createLayout();
+		ClueGame game = new ClueGame();
+		game.createLayout();
+		while(true) {
+			game.playGame();
+		}
+		
 	}
 }

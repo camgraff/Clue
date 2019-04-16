@@ -22,19 +22,17 @@ public class ComputerPlayer extends Player {
 	public BoardCell pickLocation(Set<BoardCell> targets) {
 		BoardCell[] targetArray = new BoardCell[targets.size()];
 		targetArray = targets.toArray(targetArray);		
-		int random = new Random().nextInt(targets.size());
+		int random = new Random().nextInt(targets.size());		
 		//if no rooms in targets, choose random target 
 		for (BoardCell bcell : targetArray) {
 			if (bcell.isRoom()) {
 				if (justVisited != bcell) {
-					if (bcell.isRoom())
-						justVisited = bcell;
+					justVisited = currentCell;
 					return bcell;
 				} 
 			}
 		}
-		if (targetArray[random].isRoom())
-			justVisited = targetArray[random];
+		justVisited = targetArray[random];
 		return targetArray[random];
 	}
 
@@ -60,5 +58,6 @@ public class ComputerPlayer extends Player {
 	public void addSeenCards(Card crd) {
 		seenCards.add(crd);
 	}
+	
 
 }
