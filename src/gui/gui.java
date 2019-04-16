@@ -44,6 +44,7 @@ public class gui extends JFrame {
 	private JPanel topPanel = new JPanel();
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
+	private JPanel playerHand = new JPanel();
 
 	private Board board = Board.getInstance();
 	private ArrayList<Card> deck;
@@ -118,8 +119,10 @@ public class gui extends JFrame {
 
 		createBoardPanel();
 		createControlPanel();
+		createPlayerHand();
 		topPanel.add(board);
 		topPanel.add(controlPanel, BorderLayout.SOUTH);
+		topPanel.add(playerHand,BorderLayout.EAST);
 		add(topPanel);
 
 		createDetectiveNotes();
@@ -228,6 +231,40 @@ public class gui extends JFrame {
 	
 	public void createSplashScreen() {
 		JOptionPane.showMessageDialog(this, "You are "+board.getPlayer(1).getName()+", press NextPlayer to begin play", "Welcome to Clue",JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void createPlayerHand() {
+		playerHand.setBorder(new TitledBorder(new EtchedBorder(), "My Cards"));
+		playerHand.setLayout(new GridLayout(3,1));
+		
+		JPanel peoplePanel = new JPanel();
+		JPanel roomsPanel = new JPanel();
+		JPanel weaponsPanel = new JPanel();
+		
+		peoplePanel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
+		roomsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
+		
+		for(Card c : board.getPlayer(1).getHand()) {
+			switch(c.getType()) {
+			case PERSON:
+				peoplePanel.add(new JLabel(c.getName()));
+				break;
+
+			case ROOM:
+				roomsPanel.add(new JLabel(c.getName()));
+				break;
+
+			case WEAPON:
+				weaponsPanel.add(new JLabel(c.getName()));
+				break;
+			}
+		}
+		
+		playerHand.add(peoplePanel);
+		playerHand.add(roomsPanel);
+		playerHand.add(weaponsPanel);
+		playerHand.setSize(400, 800);
 	}
 
 
