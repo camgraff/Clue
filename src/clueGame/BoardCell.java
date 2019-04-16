@@ -14,6 +14,7 @@ public class BoardCell {
 	private char initial;
 	private DoorDirection doorDirection;
 	private boolean isNameCell = false;
+	private boolean isHumanTarget = false;
 
 	public BoardCell(int row, int column, char initial) {
 		super();
@@ -25,7 +26,11 @@ public class BoardCell {
 	public void draw(Graphics2D g) {
 		if (isWalkway()) {	
 			g.setStroke(new BasicStroke(1));
-			g.setColor(Color.YELLOW);
+			if (isHumanTarget) {
+				g.setColor(Color.CYAN);
+			} else {
+				g.setColor(Color.YELLOW);
+			}
 			g.fillRect(column*SIZE, row*SIZE, SIZE, SIZE);
 			g.setColor(Color.BLACK);
 			g.drawRect(column*SIZE, row*SIZE, SIZE, SIZE);
@@ -34,11 +39,11 @@ public class BoardCell {
 			g.fillRect(column*SIZE, row*SIZE, SIZE, SIZE);
 		}
 		
-		
+
 		if (isDoorway()) {
 			g.setColor(Color.BLUE);
 			g.setStroke(new BasicStroke(5));
-		
+
 			switch (doorDirection) {
 			case UP:
 				g.drawLine(column*SIZE+2, row*SIZE+2, (column+1)*(SIZE)+2, row*(SIZE)+2);
@@ -54,8 +59,8 @@ public class BoardCell {
 				break;
 			}
 		}
-		
-	
+
+
 		if (isNameCell) {
 			g.setColor(Color.BLUE);
 			g.drawString(Board.getInstance().getLegend().get(initial), column*SIZE, row*SIZE-2);
@@ -104,11 +109,14 @@ public class BoardCell {
 	public void setDoorDirection(DoorDirection d) {
 		doorDirection = d;
 	}
-	
+
 	public void setIsNameCell() {
 		isNameCell = true;
 	}
 
+	public void setIsHumanTarget(boolean bool) {
+		isHumanTarget = bool;
+	}
 
 
 

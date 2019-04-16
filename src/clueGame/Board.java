@@ -374,11 +374,18 @@ public class Board extends JPanel {
 		return solution.equals(accusation);
 	}
 	
-	public void makeMove(Player player, int dieRoll) {
+	public void makeMove(Player player, int dieRoll) {			
+		calcTargets(player.getRow(), player.getColumn(), dieRoll);
 		if (player.isHuman()) {
+			for (BoardCell bcell : targets) {
+				bcell.setIsHumanTarget(true);
+			}
+			repaint();
+			
+			//ADD MOUSE LISTENER
+			
 			
 		} else {
-			calcTargets(player.getRow(), player.getColumn(), dieRoll);
 			BoardCell moveTo = ((ComputerPlayer) player).pickLocation(targets);
 			player.setRow(moveTo.getRow());
 			player.setColumn(moveTo.getColumn());

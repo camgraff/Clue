@@ -294,6 +294,7 @@ public class ClueGame extends JFrame {
 	}
 
 	public void doNextPlayerTurn() {
+		//ADD MOUSE LISTENER FOR HUMAN TURN 
 		Random rand = new Random();
 		if (!hasMoved) {
 			int dieRoll = rand.nextInt(6) + 1;
