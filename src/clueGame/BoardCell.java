@@ -5,6 +5,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 
 import clueGame.DoorDirection;
@@ -65,6 +67,13 @@ public class BoardCell {
 			g.setColor(Color.BLUE);
 			g.drawString(Board.getInstance().getLegend().get(initial), column*SIZE, row*SIZE-2);
 		}
+	}
+	
+	public boolean containsClick(int mouseX, int mouseY) {
+		Rectangle rect = new Rectangle(column*SIZE, row*SIZE, SIZE, SIZE);
+		if (rect.contains(new Point(mouseX, mouseY)))
+				return true;
+		return false;
 	}
 
 

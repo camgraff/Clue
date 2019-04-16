@@ -4,6 +4,8 @@ package clueGame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
@@ -37,14 +39,19 @@ public class Board extends JPanel {
 	private ArrayList<Card> deck;
 	private static Solution solution;
 	private ArrayList<Card> allCards;
+	private BoardCell humanTargetCell;
+	public boolean hasMoved = true;
 
 
-	private Board() {}
+
+	private Board() {	
+		addMouseListener(new BoardListener());
+	}
 
 	public static Board getInstance() {
 		return theInstance;
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -54,7 +61,7 @@ public class Board extends JPanel {
 
 			}
 		}
-		
+
 		for (Player plr : players) {
 			plr.draw((Graphics2D) g);
 		}
@@ -366,14 +373,14 @@ public class Board extends JPanel {
 			} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
 				return players[i%players.length].disproveSuggestion(suggestion);
 			}
-		
+
 		}
 		return null;
 	}
 	public boolean checkAccusation(Solution accusation) {
 		return solution.equals(accusation);
 	}
-	
+
 	public void makeMove(Player player, int dieRoll) {			
 		calcTargets(player.getRow(), player.getColumn(), dieRoll);
 		if (player.isHuman()) {
@@ -381,17 +388,47 @@ public class Board extends JPanel {
 				bcell.setIsHumanTarget(true);
 			}
 			repaint();
-			
-			//ADD MOUSE LISTENER
-			
-			
+			while(humanTargetCell == null) {
+
+
+			}
+			player.setRow(humanTargetCell.getRow());
+			player.setColumn(humanTargetCell.getColumn());
+			player.setCurrentCell(humanTargetCell);
+			hasMoved = true;
+			humanTargetCell = null;
+			for (BoardCell bcell : targets) {
+				bcell.setIsHumanTarget(false);
+			}
+			repaint();
+
+
 		} else {
 			BoardCell moveTo = ((ComputerPlayer) player).pickLocation(targets);
 			player.setRow(moveTo.getRow());
 			player.setColumn(moveTo.getColumn());
 			player.setCurrentCell(moveTo);
+			hasMoved = true;
 		}
 	}
+
+	private class BoardListener implements MouseListener {
+		//  Empty definitions for unused event methods.
+		public void mousePressed (MouseEvent event) {}
+		public void mouseReleased (MouseEvent event) {}
+		public void mouseEntered (MouseEvent event) {}
+		public void mouseExited (MouseEvent event) {}
+		public void mouseClicked (MouseEvent event) {
+			for (BoardCell bcell : targets) {
+				if (bcell.containsClick(event.getX(), event.getY())) {
+					humanTargetCell = bcell;
+					return;
+				}
+			}
+		}
+	}
+
+
 
 	public Color convertColor(String strColor) {
 		Color color;
@@ -420,7 +457,7 @@ public class Board extends JPanel {
 	public BoardCell getCellAt(int row, int col) {
 		return board[row][col];
 	}
-	
+
 	public BoardCell[][] getBoard() {
 		return board;
 	}
@@ -445,16 +482,16 @@ public class Board extends JPanel {
 	public ArrayList<Card> getDeck() {
 		return deck;
 	}
-	
+
 	public void setSolution(Solution newSolution) {
 		solution = newSolution;
 	}
-	
+
 	public ArrayList<Card> getAllCards() {
 
 		return allCards;
 	}
-	
+
 	public int getIndexOfPlayer(Player[] players, Player p) {
 		for(int i=0; i<players.length; i++) {
 			if(p.equals(players[i])) {
@@ -463,7 +500,7 @@ public class Board extends JPanel {
 		}
 		return -1;
 	}
-	
+
 	public boolean canBeDisproved(Solution suggestion,Player accuser) {
 		for(Player p : players) {
 			if(!p.equals(accuser)) {
@@ -473,5 +510,5 @@ public class Board extends JPanel {
 		}
 		return false;
 	}
-	
+
 }

@@ -53,14 +53,13 @@ public class ClueGame extends JFrame {
 	private JPanel playerHand = new JPanel();
 	private JTextComponent playerNameField = new JTextField(20);
 	JTextComponent rollTextField = new JTextField();
-	
+
 	private Board board = Board.getInstance();
-	private boolean hasMoved = true;
 	private int currentPlayerIndex = 0;
 
 	public void createDiePanel() {
 		JLabel rollLabel = new JLabel("Roll");
-		
+
 		rollTextField.setPreferredSize(new Dimension(60, 20));
 		rollTextField.setEditable(false);
 		diePanel.add(rollLabel);
@@ -95,9 +94,10 @@ public class ClueGame extends JFrame {
 		JButton nextPlayer = new JButton("Next player");		
 		class nextPlayerButtonListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				hasMoved = false;
+				board.hasMoved = false;
 			}
 		}
+
 		nextPlayer.addActionListener(new nextPlayerButtonListener());
 
 		playerNameField.setEditable(false);
@@ -295,20 +295,20 @@ public class ClueGame extends JFrame {
 
 	public void doNextPlayerTurn() {
 		//ADD MOUSE LISTENER FOR HUMAN TURN 
-		Random rand = new Random();
-		if (!hasMoved) {
+		Random rand = new Random();			
+
+		if (!board.hasMoved) {
 			int dieRoll = rand.nextInt(6) + 1;
 			rollTextField.setText(Integer.toString(dieRoll));
-			Player currentPlayer = board.getPlayer(currentPlayerIndex);
-			currentPlayerIndex = (currentPlayerIndex + 1) % 6;
+			Player currentPlayer = board.getPlayer(currentPlayerIndex);			
 			playerNameField.setText(currentPlayer.getName());
-			board.makeMove(currentPlayer, dieRoll);
+			board.makeMove(currentPlayer, dieRoll);			
+			currentPlayerIndex = (currentPlayerIndex + 1) % 6;
 			board.repaint();
-			hasMoved = true;
 		}
 
 	}
-	
+
 	public void playGame() {
 		doNextPlayerTurn();
 	}
@@ -319,6 +319,6 @@ public class ClueGame extends JFrame {
 		while(true) {
 			game.playGame();
 		}
-		
+
 	}
 }
