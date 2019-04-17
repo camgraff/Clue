@@ -385,7 +385,6 @@ public class Board extends JPanel {
 		calcTargets(player.getRow(), player.getColumn(), dieRoll);
 		if (player.isHuman()) {
 			for (BoardCell bcell : targets) {
-				System.out.println(bcell.getRow()+" "+bcell.getColumn());
 				bcell.setIsHumanTarget(true);
 			}
 			repaint();

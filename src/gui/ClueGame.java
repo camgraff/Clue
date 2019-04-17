@@ -303,9 +303,9 @@ public class ClueGame extends JFrame {
 			rollTextField.setText(Integer.toString(dieRoll));
 			currentPlayer = board.getPlayer(currentPlayerIndex);	
 			playerNameField.setText(currentPlayer.getName());
-			
+
 			board.makeMove(currentPlayer, dieRoll);		
-			
+
 			if (currentPlayer.isHuman()) {
 				doHumanPlayerTurn();
 			}
@@ -366,8 +366,12 @@ public class ClueGame extends JFrame {
 		}	
 		board.addMouseListener(new BoardListener());
 		while (board.humanTargetCell == null) {
-
-
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		currentPlayer.setRow(board.humanTargetCell.getRow());
 		currentPlayer.setColumn(board.humanTargetCell.getColumn());
