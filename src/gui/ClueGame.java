@@ -10,6 +10,8 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -52,6 +54,7 @@ public class ClueGame extends JFrame {
 	private JMenuBar menu = new JMenuBar();
 	private JTextComponent playerNameField = new JTextField(20);
 	JTextComponent rollTextField = new JTextField();
+	private Player currentPlayer;
 
 	private Board board = Board.getInstance();
 	private int currentPlayerIndex = 0;
@@ -293,19 +296,26 @@ public class ClueGame extends JFrame {
 	}
 
 	public void doNextPlayerTurn() {
-		//ADD MOUSE LISTENER FOR HUMAN TURN 
-		Random rand = new Random();			
 
-		if (!board.hasMoved) {
+		if (!board.hasMoved) {		
+			Random rand = new Random();	
 			int dieRoll = rand.nextInt(6) + 1;
 			rollTextField.setText(Integer.toString(dieRoll));
-			Player currentPlayer = board.getPlayer(currentPlayerIndex);			
+			currentPlayer = board.getPlayer(currentPlayerIndex);	
 			playerNameField.setText(currentPlayer.getName());
-			board.makeMove(currentPlayer, dieRoll);			
+			
+			board.makeMove(currentPlayer, dieRoll);		
+			
+			if (currentPlayer.isHuman()) {
+				doHumanPlayerTurn();
+			}
+
+
 			currentPlayerIndex = (currentPlayerIndex + 1) % 6;
 			board.repaint();
+
 		}
-		
+
 		/*Logic for do next player turn.
 		 * 
 		 * Next player pressed
@@ -336,6 +346,38 @@ public class ClueGame extends JFrame {
 		 * }
 		 */
 
+	}
+
+	public void doHumanPlayerTurn() {
+
+		class BoardListener implements MouseListener {
+			//  Empty definitions for unused event methods.
+			public void mousePressed (MouseEvent event) {}
+			public void mouseReleased (MouseEvent event) {}
+			public void mouseEntered (MouseEvent event) {}
+			public void mouseExited (MouseEvent event) {}
+			public void mouseClicked (MouseEvent event) {
+				for (BoardCell bcell : board.getTargets()) {
+					if (bcell.containsClick(event.getX(), event.getY())) {
+						board.humanTargetCell = bcell;
+					}
+				}
+			}	
+		}	
+		board.addMouseListener(new BoardListener());
+		while (board.humanTargetCell == null) {
+
+
+		}
+		currentPlayer.setRow(board.humanTargetCell.getRow());
+		currentPlayer.setColumn(board.humanTargetCell.getColumn());
+		currentPlayer.setCurrentCell(board.humanTargetCell);
+		board.hasMoved = true;
+		board.humanTargetCell = null;
+		for (BoardCell bcell : board.getTargets()) {
+			bcell.setIsHumanTarget(false);
+		}
+		repaint();
 	}
 
 	public void playGame() {

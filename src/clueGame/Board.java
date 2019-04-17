@@ -40,7 +40,7 @@ public class Board extends JPanel {
 	private ArrayList<Card> deck;
 	private static Solution solution;
 	private ArrayList<Card> allCards;
-	private BoardCell humanTargetCell;
+	public BoardCell humanTargetCell;
 	public boolean hasMoved = true;
 
 
@@ -381,26 +381,15 @@ public class Board extends JPanel {
 	}
 
 	public void makeMove(Player player, int dieRoll) {	
-		addMouseListener(new BoardListener());
+		
 		calcTargets(player.getRow(), player.getColumn(), dieRoll);
 		if (player.isHuman()) {
 			for (BoardCell bcell : targets) {
+				System.out.println(bcell.getRow()+" "+bcell.getColumn());
 				bcell.setIsHumanTarget(true);
 			}
 			repaint();
-			while(humanTargetCell == null) {
-
-
-			}
-			player.setRow(humanTargetCell.getRow());
-			player.setColumn(humanTargetCell.getColumn());
-			player.setCurrentCell(humanTargetCell);
-			hasMoved = true;
-			humanTargetCell = null;
-			for (BoardCell bcell : targets) {
-				bcell.setIsHumanTarget(false);
-			}
-			repaint();
+			
 
 
 		} else {
@@ -412,21 +401,7 @@ public class Board extends JPanel {
 		}
 	}
 
-	private class BoardListener implements MouseListener {
-		//  Empty definitions for unused event methods.
-		public void mousePressed (MouseEvent event) {}
-		public void mouseReleased (MouseEvent event) {}
-		public void mouseEntered (MouseEvent event) {}
-		public void mouseExited (MouseEvent event) {}
-		public void mouseClicked (MouseEvent event) {
-			for (BoardCell bcell : targets) {
-				if (bcell.containsClick(event.getX(), event.getY())) {
-					humanTargetCell = bcell;
-					return;
-				}
-			}
-		}
-	}
+	
 
 
 
