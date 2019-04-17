@@ -50,7 +50,6 @@ public class ClueGame extends JFrame {
 	private JPanel boardPanel = new JPanel();
 	private JDialog detectiveNotes;
 	private JMenuBar menu = new JMenuBar();
-	private JPanel playerHand = new JPanel();
 	private JTextComponent playerNameField = new JTextField(20);
 	JTextComponent rollTextField = new JTextField();
 
@@ -123,7 +122,7 @@ public class ClueGame extends JFrame {
 	//creates gui
 	public void createLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(1000,800);
+		setSize(815,765);
 		topPanel.setLayout(new BorderLayout());
 
 		createMenuBar();
@@ -306,6 +305,36 @@ public class ClueGame extends JFrame {
 			currentPlayerIndex = (currentPlayerIndex + 1) % 6;
 			board.repaint();
 		}
+		
+		/*Logic for do next player turn.
+		 * 
+		 * Next player pressed
+		 * 
+		 * 
+		 * 
+		 * if(current humanPlayer turn finished?){
+		 * 		update currentplayer
+		 * 		roll dice
+		 * 		calc targets
+		 *		update game board control panel
+		 *		
+		 *		if(currentplayer human?){
+		 *			display targets
+		 *			flag unfinished
+		 *			end
+		 *		} else{
+		 *			do accusation
+		 *			do move for computer
+		 *			if(computer can make accusation){
+		 *				make accusation/computer wins
+		 *			}
+		 *		}
+		 *
+		 *
+		 * } else(no){
+		 * 		error message/ let player finish turn.
+		 * }
+		 */
 
 	}
 
