@@ -21,6 +21,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+
 public class Board extends JPanel {
 
 	private int numRows;
@@ -44,9 +45,7 @@ public class Board extends JPanel {
 
 
 
-	private Board() {	
-		addMouseListener(new BoardListener());
-	}
+	private Board() {}
 
 	public static Board getInstance() {
 		return theInstance;
@@ -381,7 +380,8 @@ public class Board extends JPanel {
 		return solution.equals(accusation);
 	}
 
-	public void makeMove(Player player, int dieRoll) {			
+	public void makeMove(Player player, int dieRoll) {	
+		addMouseListener(new BoardListener());
 		calcTargets(player.getRow(), player.getColumn(), dieRoll);
 		if (player.isHuman()) {
 			for (BoardCell bcell : targets) {
