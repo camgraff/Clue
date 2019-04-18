@@ -54,6 +54,7 @@ public class ClueGame extends JFrame {
 	private JMenuBar menu = new JMenuBar();
 	private JTextComponent playerNameField = new JTextField(20);
 	JTextComponent rollTextField = new JTextField();
+	JButton nextPlayer = new JButton("Next player");		
 	private Player currentPlayer;
 
 	private Board board = Board.getInstance();
@@ -93,7 +94,7 @@ public class ClueGame extends JFrame {
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");
 
-		JButton nextPlayer = new JButton("Next player");		
+		nextPlayer = new JButton("Next player");		
 		class nextPlayerButtonListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				board.hasMoved = false;
@@ -152,6 +153,7 @@ public class ClueGame extends JFrame {
 	public void createBoardPanel() {
 		board.setConfigFiles("rooms.csv", "legend.txt");
 		board.initialize();
+		board.dealCards();
 		board.setSize(100,100);
 
 		boardPanel.setLayout(new BorderLayout());
@@ -368,6 +370,9 @@ public class ClueGame extends JFrame {
 		while (board.humanTargetCell == null) {
 			try {
 				Thread.sleep(10);
+				if ( nextPlayer.getModel().isPressed()) {
+					JOptionPane.showMessageDialog(this, "Please select a square to move to.","Error", JOptionPane.INFORMATION_MESSAGE);
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

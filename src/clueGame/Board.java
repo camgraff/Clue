@@ -76,7 +76,7 @@ public class Board extends JPanel {
 			e.printStackTrace();
 		}
 		allCards = new ArrayList<Card>(deck);
-		dealCards();
+		//dealCards();
 	}
 
 	//sets names of config files used to loard board and room configurations

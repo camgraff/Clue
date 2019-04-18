@@ -27,20 +27,20 @@ public class BoardCell {
 
 	public void draw(Graphics2D g) {
 		if (isWalkway()) {	
-			g.setStroke(new BasicStroke(1));
-			if (isHumanTarget) {
+			g.setStroke(new BasicStroke(1));			
+			g.setColor(Color.YELLOW);
+			if (isHumanTarget) 
 				g.setColor(Color.CYAN);
-			} else {
-				g.setColor(Color.YELLOW);
-			}
 			g.fillRect(column*SIZE, row*SIZE, SIZE, SIZE);
 			g.setColor(Color.BLACK);
 			g.drawRect(column*SIZE, row*SIZE, SIZE, SIZE);
-		} else {
+		} else {			
 			g.setColor(Color.LIGHT_GRAY);	
+			if (isHumanTarget) 
+				g.setColor(Color.CYAN);
 			g.fillRect(column*SIZE, row*SIZE, SIZE, SIZE);
 		}
-		
+
 
 		if (isDoorway()) {
 			g.setColor(Color.BLUE);
@@ -68,11 +68,12 @@ public class BoardCell {
 			g.drawString(Board.getInstance().getLegend().get(initial), column*SIZE, row*SIZE-2);
 		}
 	}
-	
+
+
 	public boolean containsClick(int mouseX, int mouseY) {
 		Rectangle rect = new Rectangle(column*SIZE, row*SIZE, SIZE, SIZE);
 		if (rect.contains(new Point(mouseX, mouseY)))
-				return true;
+			return true;
 		return false;
 	}
 

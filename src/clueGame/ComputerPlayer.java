@@ -27,12 +27,12 @@ public class ComputerPlayer extends Player {
 		for (BoardCell bcell : targetArray) {
 			if (bcell.isRoom()) {
 				if (justVisited != bcell) {
-					justVisited = currentCell;
+					justVisited = bcell;
 					return bcell;
 				} 
 			}
 		}
-		justVisited = targetArray[random];
+		//justVisited = targetArray[random];
 		return targetArray[random];
 	}
 
