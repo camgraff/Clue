@@ -40,4 +40,8 @@ public class Solution {
 	public Card getWeapon() {
 		return weapon;
 	}
+	
+	public String toString() {
+		return (person.getName() + " in the " + room.getName() + " with the " + weapon.getName());
+	}
 }

@@ -139,6 +139,9 @@ public class Board extends JPanel {
 		int i =0;
 		while(!deck.isEmpty()) {
 			players[i%(players.length)].recieveCard(deck.get(0));
+			if(!players[i%(players.length)].isHuman()) {
+				((ComputerPlayer)(players[i%(players.length)])).addSeenCards(deck.get(0));
+			}
 			deck.remove(0);
 			i++;
 		}
@@ -392,7 +395,11 @@ public class Board extends JPanel {
 
 
 		} else {
+			if (((ComputerPlayer)player).getCanMakeAccusation()) {
+				
+			}
 			BoardCell moveTo = ((ComputerPlayer) player).pickLocation(targets);
+			
 			player.setRow(moveTo.getRow());
 			player.setColumn(moveTo.getColumn());
 			player.setCurrentCell(moveTo);

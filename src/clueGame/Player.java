@@ -15,7 +15,7 @@ public class Player {
 	private int column;
 	private Color color;
 	private ArrayList<Card> hand = new ArrayList<Card>();
-	BoardCell currentCell;
+	private BoardCell currentCell;
 
 	public Player() {}
 	
@@ -110,6 +110,10 @@ public class Player {
 	
 	public void setCurrentCell(BoardCell b) {
 		currentCell = b;
+	}
+	
+	public BoardCell getCurrentCell() {
+		return currentCell;
 	}
 	
 		

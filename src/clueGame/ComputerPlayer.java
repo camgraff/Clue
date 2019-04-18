@@ -10,6 +10,8 @@ import java.util.Set;
 public class ComputerPlayer extends Player {
 	private BoardCell justVisited;
 	private Set<Card> seenCards = new HashSet<Card>();
+	BoardCell lastRoomVisited = new BoardCell(-1, -1, 'X');
+	boolean canMakeAccusation = false;
 
 	public ComputerPlayer(String playerName, int row, int column, Color color) {
 		super(playerName, row, column, color);
@@ -26,8 +28,8 @@ public class ComputerPlayer extends Player {
 		//if no rooms in targets, choose random target 
 		for (BoardCell bcell : targetArray) {
 			if (bcell.isRoom()) {
-				if (justVisited != bcell) {
-					justVisited = bcell;
+				if (justVisited != bcell && lastRoomVisited.getInitial() != bcell.getInitial()) {
+					justVisited = lastRoomVisited = bcell;
 					return bcell;
 				} 
 			}
@@ -54,10 +56,28 @@ public class ComputerPlayer extends Player {
 		int randomWeapon = new Random().nextInt(possibleWeapons.size());
 		return new Solution(possiblePersons.get(randomPerson), new Card(legend.get(board[getRow()][getColumn()].getInitial()), CardType.ROOM), possibleWeapons.get(randomWeapon));
 	}
-	
+
+	public boolean handContainsCurrentRoom(Map< Character, String> legend) {
+		String currentRoom = legend.get(this.getCurrentCell().getInitial());
+		for (Card crd : this.getHand()) {
+			if (crd.getType() == CardType.ROOM) {
+				if (currentRoom == crd.getName()) return true;
+			}
+		}
+		return false;
+	}
+
 	public void addSeenCards(Card crd) {
 		seenCards.add(crd);
 	}
-	
+
+	public boolean getCanMakeAccusation() {
+		return canMakeAccusation;
+	}
+
+	public void setCanMakeAccusation() {
+		canMakeAccusation = true;
+	}
+
 
 }

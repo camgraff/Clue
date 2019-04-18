@@ -42,25 +42,23 @@ import javafx.scene.layout.Border;
 
 public class ClueGame extends JFrame {		
 	private JPanel controlPanel = new JPanel();
-	private JPanel buttonPanel = new JPanel();
-	private JPanel bottomPanel = new JPanel();
-	private JPanel diePanel = new JPanel();
-	private JPanel guessPanel = new JPanel();
-	private JPanel resultPanel = new JPanel();
 	private JPanel topPanel = new JPanel();
 	private JPanel cardPanel = new JPanel();
 	private JPanel boardPanel = new JPanel();
-	private JDialog detectiveNotes;
+	private JDialog detectiveNotes;		
+	JTextComponent rollTextField = new JTextField();
 	private JMenuBar menu = new JMenuBar();
 	private JTextComponent playerNameField = new JTextField(20);
-	JTextComponent rollTextField = new JTextField();
+	JTextComponent guessTextField = new JTextField(20);
+	JTextComponent resultTextField = new JTextField();
 	JButton nextPlayer = new JButton("Next player");		
 	private Player currentPlayer;
 
 	private Board board = Board.getInstance();
 	private int currentPlayerIndex = 0;
 
-	public void createDiePanel() {
+	public JPanel createDiePanel() {	
+		JPanel diePanel = new JPanel();	
 		JLabel rollLabel = new JLabel("Roll");
 
 		rollTextField.setPreferredSize(new Dimension(60, 20));
@@ -68,39 +66,46 @@ public class ClueGame extends JFrame {
 		diePanel.add(rollLabel);
 		diePanel.add(rollTextField);
 		diePanel.setBorder(new TitledBorder(new EtchedBorder(), "Die"));
+
+		return diePanel;
 	}
 
-	public void createGuessPanel() {
+	public JPanel createGuessPanel() {	
+		JPanel guessPanel = new JPanel();
 		JLabel guessLabel = new JLabel("Guess");
-		JTextComponent guessTextField = new JTextField();
+
 		guessTextField.setPreferredSize(new Dimension(250, 20));
 		guessTextField.setEditable(false);
 		guessPanel.add(guessLabel);
 		guessPanel.add(guessTextField);
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
+
+		return guessPanel;
 	}
 
-	public void createResultPanel() {
+	public JPanel createResultPanel() {	
+		JPanel resultPanel = new JPanel();
 		JLabel resultLabel = new JLabel("Response");
-		JTextComponent resultTextField = new JTextField();
+
 		resultTextField.setPreferredSize(new Dimension(200, 20));
 		resultTextField.setEditable(false);
 		resultPanel.add(resultLabel);
 		resultPanel.add(resultTextField);
 		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
+
+		return resultPanel;
 	}
 
-	public void createButtonPanel() {
+	public JPanel createButtonPanel() {
+		JPanel buttonPanel = new JPanel();
 		JPanel turnPanel = new JPanel();
 		JLabel whoseTurn = new JLabel("Whose turn?");
 
-		nextPlayer = new JButton("Next player");		
 		class nextPlayerButtonListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				board.hasMoved = false;
 			}
 		}
-
 		nextPlayer.addActionListener(new nextPlayerButtonListener());
 
 		playerNameField.setEditable(false);
@@ -111,22 +116,27 @@ public class ClueGame extends JFrame {
 		buttonPanel.add(turnPanel);
 		buttonPanel.add(nextPlayer);
 		buttonPanel.add(makeAccusation);
+
+		return buttonPanel;
 	}
 
-	public void createBottomPanel() {
+	public JPanel createBottomPanel() {
+		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		createDiePanel();
 		createGuessPanel();
 		createResultPanel();
-		bottomPanel.add(diePanel);
-		bottomPanel.add(guessPanel);
-		bottomPanel.add(resultPanel);
+		bottomPanel.add(createDiePanel());
+		bottomPanel.add(createGuessPanel());
+		bottomPanel.add(createResultPanel());
+
+		return bottomPanel;
 	}
 
 	//creates gui
 	public void createLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(815,765);
+		setSize(1000,800);
 		topPanel.setLayout(new BorderLayout());
 
 		createMenuBar();
@@ -165,10 +175,10 @@ public class ClueGame extends JFrame {
 	//control panel contains all buttons
 	public void createControlPanel() {
 		createButtonPanel();
-		createBottomPanel();
-		controlPanel.setLayout(new GridLayout(2, 1));		
-		controlPanel.add(buttonPanel);
-		controlPanel.add(bottomPanel);
+		createBottomPanel();		
+		controlPanel.setLayout(new GridLayout(2, 1));
+		controlPanel.add(createButtonPanel());
+		controlPanel.add(createBottomPanel());
 	}
 
 	//create detective notes to keep track of seen cards/guesses
@@ -310,6 +320,24 @@ public class ClueGame extends JFrame {
 
 			if (currentPlayer.isHuman()) {
 				doHumanPlayerTurn();
+			} else {
+				if (currentPlayer.getCurrentCell().isRoom()) {
+					Solution guess = ((ComputerPlayer)currentPlayer).createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend());
+					if (((ComputerPlayer)currentPlayer).getCanMakeAccusation()) {
+						((ComputerPlayer)currentPlayer).makeAccusation(guess.getPerson().getName(), guess.getRoom().getName(), guess.getWeapon().getName());
+					}
+					guessTextField.setText(guess.toString());
+					Card disproveCard = board.handleSuggestion(guess, currentPlayer);
+					resultTextField.setText(disproveCard.getName());
+					for (Player player : board.getPlayers()) {
+						if (!player.isHuman()) {
+							((ComputerPlayer)player).addSeenCards(disproveCard);
+						}
+					}
+					if (disproveCard == null && ((ComputerPlayer)currentPlayer).handContainsCurrentRoom(board.getLegend())) {
+						((ComputerPlayer)currentPlayer).setCanMakeAccusation();
+					}
+				}
 			}
 
 
