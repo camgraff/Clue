@@ -53,8 +53,8 @@ public class ClueGame extends JFrame {
 	JComboBox<String> guessPerson = new JComboBox<String>();
 	JComboBox<String> guessRoom = new JComboBox<String>();
 	JComboBox<String> guessWeapon = new JComboBox<String>();
-	JTextComponent guessTextField = new JTextField(20);
-	JTextComponent resultTextField = new JTextField();
+	JTextComponent guessTextField = new JTextField(40);
+	JTextComponent resultTextField = new JTextField(10);
 	JButton nextPlayer = new JButton("Next player");		
 	private Player currentPlayer;
 	Solution guess = new Solution();
@@ -80,11 +80,12 @@ public class ClueGame extends JFrame {
 		JPanel guessPanel = new JPanel();
 		JLabel guessLabel = new JLabel("Guess");
 
-		guessTextField.setPreferredSize(new Dimension(250, 20));
+		guessTextField.setPreferredSize(new Dimension(1000, 20));
 		guessTextField.setEditable(false);
 		guessPanel.add(guessLabel);
 		guessPanel.add(guessTextField);
 		guessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
+		guessPanel.setPreferredSize(new Dimension(600,65));
 
 		return guessPanel;
 	}
@@ -93,11 +94,11 @@ public class ClueGame extends JFrame {
 		JPanel resultPanel = new JPanel();
 		JLabel resultLabel = new JLabel("Response");
 
-		resultTextField.setPreferredSize(new Dimension(200, 20));
 		resultTextField.setEditable(false);
 		resultPanel.add(resultLabel);
 		resultPanel.add(resultTextField);
 		resultPanel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
+		resultPanel.setPreferredSize(new Dimension(200,65));
 
 		return resultPanel;
 	}
@@ -128,7 +129,7 @@ public class ClueGame extends JFrame {
 
 	public JPanel createBottomPanel() {
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(new GridLayout(1, 3));
+		bottomPanel.setLayout(new FlowLayout());
 		createDiePanel();
 		createGuessPanel();
 		createResultPanel();
@@ -464,22 +465,15 @@ public class ClueGame extends JFrame {
 		}
 		cancelButton.addActionListener(new cancelButtonListener());
 		guessDialog.add(cancelButton);
-
-
-
-		if (submitButton.getModel().isPressed()) {
-		}
 		guessDialog.setVisible(true);
+		
 		while(hasGuessed == false) {
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-
 	}
 
 	public void playGame() {

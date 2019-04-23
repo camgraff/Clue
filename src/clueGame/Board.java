@@ -456,7 +456,7 @@ public class Board extends JPanel {
 	}
 
 	public Player getPlayer(int p) {
-		if (p == 0) return (HumanPlayer) players[p];
+		if (players[p].isHuman()) return (HumanPlayer) players[p];
 		else return (ComputerPlayer) players[p];
 	}
 
