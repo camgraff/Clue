@@ -7,12 +7,20 @@ public class Solution {
 	private Card person;
 	private Card room;
 	private Card weapon;
+	
+	public Solution() {}
 
 
 	public Solution(Card p, Card r, Card w) {	
 		person = p;
 		room = r;
 		weapon = w;
+	}
+	
+	public Solution(String p, String r, String w) {	
+		person = new Card(p, CardType.PERSON);
+		room = new Card(r, CardType.ROOM);
+		weapon = new Card(w, CardType.WEAPON);
 	}
 
 	public boolean equals(Solution other) {

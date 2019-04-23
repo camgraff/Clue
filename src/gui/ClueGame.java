@@ -46,13 +46,19 @@ public class ClueGame extends JFrame {
 	private JPanel cardPanel = new JPanel();
 	private JPanel boardPanel = new JPanel();
 	private JDialog detectiveNotes;		
+	private JDialog guessDialog;
 	JTextComponent rollTextField = new JTextField();
 	private JMenuBar menu = new JMenuBar();
 	private JTextComponent playerNameField = new JTextField(20);
+	JComboBox<String> guessPerson = new JComboBox<String>();
+	JComboBox<String> guessRoom = new JComboBox<String>();
+	JComboBox<String> guessWeapon = new JComboBox<String>();
 	JTextComponent guessTextField = new JTextField(20);
 	JTextComponent resultTextField = new JTextField();
 	JButton nextPlayer = new JButton("Next player");		
 	private Player currentPlayer;
+	Solution guess = new Solution();
+	boolean hasGuessed = false;
 
 	private Board board = Board.getInstance();
 	private int currentPlayerIndex = 0;
@@ -190,10 +196,6 @@ public class ClueGame extends JFrame {
 		JPanel roomGuessPanel = new JPanel();
 		JPanel weaponGuessPanel = new JPanel();
 
-		JComboBox<String> guessPerson = new JComboBox<String>();
-		JComboBox<String> guessRoom = new JComboBox<String>();
-		JComboBox<String> guessWeapon = new JComboBox<String>();
-
 		detectiveNotes = new JDialog(this, "Detective Notes");
 		detectiveNotes.setTitle("Detective Notes");
 		detectiveNotes.setSize(600,500);
@@ -328,13 +330,18 @@ public class ClueGame extends JFrame {
 					}
 					guessTextField.setText(guess.toString());
 					Card disproveCard = board.handleSuggestion(guess, currentPlayer);
-					resultTextField.setText(disproveCard.getName());
+					if (disproveCard == null) {
+						resultTextField.setText("Can't be disproved");
+					} else {
+						resultTextField.setText(disproveCard.getName());
+					}
 					for (Player player : board.getPlayers()) {
 						if (!player.isHuman()) {
 							((ComputerPlayer)player).addSeenCards(disproveCard);
 						}
 					}
 					if (disproveCard == null && ((ComputerPlayer)currentPlayer).handContainsCurrentRoom(board.getLegend())) {
+
 						((ComputerPlayer)currentPlayer).setCanMakeAccusation();
 					}
 				}
@@ -415,6 +422,64 @@ public class ClueGame extends JFrame {
 			bcell.setIsHumanTarget(false);
 		}
 		repaint();
+		if(currentPlayer.getCurrentCell().isRoom()) {
+			createGuessDialog(currentPlayer);
+		}
+	}
+
+	public void createGuessDialog(Player currentPlayer) {
+		hasGuessed = false;
+		guessDialog = new JDialog(this, "Make a Guess");
+		guessDialog.setSize(400,200);
+		guessDialog.setLayout(new GridLayout(4,2));
+		guessDialog.add(new JLabel("Your room"));
+		guessDialog.add(new JLabel(board.getLegend().get(currentPlayer.getCurrentCell().getInitial())));
+		guessDialog.add(new JLabel("Person"));
+		guessDialog.add(guessPerson);
+		guessDialog.add(new JLabel("Weapon"));
+		guessDialog.add(guessWeapon);
+		JButton submitButton = new JButton("Submit");
+		class submitButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				guess = new Solution((String)guessPerson.getSelectedItem(),board.getLegend().get(currentPlayer.getCurrentCell().getInitial()),(String)guessWeapon.getSelectedItem());
+				guessTextField.setText(guess.toString());
+				Card disproveCard = board.handleSuggestion(guess, currentPlayer);
+				if (disproveCard == null) {
+					resultTextField.setText("Can't be disproved");
+				} else {
+					resultTextField.setText(disproveCard.getName());
+				}
+				hasGuessed = true;
+				guessDialog.setVisible(false);
+			}
+		}
+		submitButton.addActionListener(new submitButtonListener());
+		guessDialog.add(submitButton);
+		JButton cancelButton = new JButton("Cancel");
+		class cancelButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				hasGuessed = true;
+				guessDialog.setVisible(false);
+			}
+		}
+		cancelButton.addActionListener(new cancelButtonListener());
+		guessDialog.add(cancelButton);
+
+
+
+		if (submitButton.getModel().isPressed()) {
+		}
+		guessDialog.setVisible(true);
+		while(hasGuessed == false) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
 	}
 
 	public void playGame() {
