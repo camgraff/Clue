@@ -47,6 +47,7 @@ public class ClueGame extends JFrame {
 	private JPanel boardPanel = new JPanel();
 	private JDialog detectiveNotes;		
 	private JDialog guessDialog;
+	private JDialog accusationDialog;
 	JTextComponent rollTextField = new JTextField();
 	private JMenuBar menu = new JMenuBar();
 	private JTextComponent playerNameField = new JTextField(20);
@@ -55,10 +56,15 @@ public class ClueGame extends JFrame {
 	JComboBox<String> guessWeapon = new JComboBox<String>();
 	JTextComponent guessTextField = new JTextField(40);
 	JTextComponent resultTextField = new JTextField(10);
-	JButton nextPlayer = new JButton("Next player");		
+	JButton nextPlayer = new JButton("Next player");	
+	JButton makeAccusation= new JButton("Make an accusation");
 	private Player currentPlayer;
 	Solution guess = new Solution();
 	boolean hasGuessed = false;
+	boolean hasWon = false;
+	boolean canMakeAccusation = false;
+	//boolean createAccusation = false;
+
 
 	private Board board = Board.getInstance();
 	private int currentPlayerIndex = 0;
@@ -114,9 +120,19 @@ public class ClueGame extends JFrame {
 			}
 		}
 		nextPlayer.addActionListener(new nextPlayerButtonListener());
-
+		class makeAccusationButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				if (canMakeAccusation) {
+					createAccusationDialog();
+					canMakeAccusation = false;
+				}
+				else {
+					JOptionPane.showMessageDialog(topPanel, "An accusation can only be made at the start of your turn.", "Error", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		}
+		makeAccusation.addActionListener(new makeAccusationButtonListener());
 		playerNameField.setEditable(false);
-		JButton makeAccusation= new JButton("Make an accusation");
 		buttonPanel.setLayout(new GridLayout(1, 3));		
 		turnPanel.add(whoseTurn);	
 		turnPanel.add(playerNameField);
@@ -125,6 +141,45 @@ public class ClueGame extends JFrame {
 		buttonPanel.add(makeAccusation);
 
 		return buttonPanel;
+	}
+
+	public void createAccusationDialog() {
+		hasGuessed = false;
+		accusationDialog = new JDialog(this, "Make an Accusation");
+		accusationDialog.setSize(400,200);
+		accusationDialog.setLayout(new GridLayout(4,2));
+		accusationDialog.add(new JLabel("Room"));
+		accusationDialog.add(guessRoom);
+		accusationDialog.add(new JLabel("Person"));
+		accusationDialog.add(guessPerson);
+		accusationDialog.add(new JLabel("Weapon"));
+		accusationDialog.add(guessWeapon);
+		JButton submitButton = new JButton("Submit");
+		class submitButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				hasGuessed = true;
+				Solution accusation = new Solution((String)guessPerson.getSelectedItem(),(String)guessRoom.getSelectedItem(),(String)guessWeapon.getSelectedItem());
+				if (board.checkAccusation(accusation)) {
+					hasWon = true;
+					JOptionPane.showMessageDialog(topPanel, "Congratulations, you win!", "Winner!", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(topPanel, "Incorrect accusation","Wrong", JOptionPane.INFORMATION_MESSAGE);
+				}					
+				accusationDialog.setVisible(false);
+			}
+		}
+		submitButton.addActionListener(new submitButtonListener());
+		accusationDialog.add(submitButton);
+		JButton cancelButton = new JButton("Cancel");
+		class cancelButtonListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				hasGuessed = true;
+				accusationDialog.setVisible(false);
+			}
+		}
+		cancelButton.addActionListener(new cancelButtonListener());
+		accusationDialog.add(cancelButton);
+		accusationDialog.setVisible(true);
 	}
 
 	public JPanel createBottomPanel() {
@@ -180,9 +235,7 @@ public class ClueGame extends JFrame {
 	}
 
 	//control panel contains all buttons
-	public void createControlPanel() {
-		createButtonPanel();
-		createBottomPanel();		
+	public void createControlPanel() {	
 		controlPanel.setLayout(new GridLayout(2, 1));
 		controlPanel.add(createButtonPanel());
 		controlPanel.add(createBottomPanel());
@@ -387,6 +440,7 @@ public class ClueGame extends JFrame {
 	}
 
 	public void doHumanPlayerTurn() {
+		canMakeAccusation = true;
 
 		class BoardListener implements MouseListener {
 			//  Empty definitions for unused event methods.
@@ -406,6 +460,23 @@ public class ClueGame extends JFrame {
 		while (board.humanTargetCell == null) {
 			try {
 				Thread.sleep(10);
+				if (makeAccusation.getModel().isPressed() && canMakeAccusation) {
+					while(hasGuessed == false) {
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}					
+					}
+					if (hasWon == false) {
+						for (BoardCell bcell : board.getTargets()) {
+							bcell.setIsHumanTarget(false);
+						}
+						repaint();
+						return;
+					}
+			
+				}
 				if ( nextPlayer.getModel().isPressed()) {
 					JOptionPane.showMessageDialog(this, "Please select a square to move to.","Error", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -426,6 +497,7 @@ public class ClueGame extends JFrame {
 		if(currentPlayer.getCurrentCell().isRoom()) {
 			createGuessDialog(currentPlayer);
 		}
+		canMakeAccusation = false;
 	}
 
 	public void createGuessDialog(Player currentPlayer) {
@@ -466,7 +538,7 @@ public class ClueGame extends JFrame {
 		cancelButton.addActionListener(new cancelButtonListener());
 		guessDialog.add(cancelButton);
 		guessDialog.setVisible(true);
-		
+
 		while(hasGuessed == false) {
 			try {
 				Thread.sleep(10);
@@ -477,15 +549,18 @@ public class ClueGame extends JFrame {
 	}
 
 	public void playGame() {
+		if (hasWon) {
+			JOptionPane.showMessageDialog(this, "Congratulaions, you won!","You Win!", JOptionPane.INFORMATION_MESSAGE);
+		}
 		doNextPlayerTurn();
 	}
 
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
 		game.createLayout();
-		while(true) {
+		while(game.hasWon == false) {
 			game.playGame();
 		}
-
+		System.exit(0);
 	}
 }

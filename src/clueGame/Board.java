@@ -36,7 +36,7 @@ public class Board extends JPanel {
 	private String playerConfigFile;
 	private static Board theInstance = new Board();
 	private Set<BoardCell> visited;
-	private Player[] players;
+	private ArrayList<Player> players;
 	private ArrayList<Card> deck;
 	private static Solution solution;
 	private ArrayList<Card> allCards;
@@ -136,11 +136,14 @@ public class Board extends JPanel {
 		}
 
 		solution = new Solution(firstPerson, firstRoom, firstWeapon);
+		
+		//System.out.println(solution.toString());
+		
 		int i =0;
 		while(!deck.isEmpty()) {
-			players[i%(players.length)].recieveCard(deck.get(0));
-			if(!players[i%(players.length)].isHuman()) {
-				((ComputerPlayer)(players[i%(players.length)])).addSeenCards(deck.get(0));
+			players.get(i%(players.size())).recieveCard(deck.get(0));
+			if(!players.get(i%(players.size())).isHuman()) {
+				((ComputerPlayer)(players.get(i%(players.size())))).addSeenCards(deck.get(0));
 			}
 			deck.remove(0);
 			i++;
@@ -158,7 +161,7 @@ public class Board extends JPanel {
 
 	//loads players into the board and deck
 	public void loadPlayerConfig() throws FileNotFoundException {
-		players = new Player[6];
+		players = new ArrayList<Player>();
 		FileReader in = new FileReader("playerConfig.txt");
 		Scanner playerScan = new Scanner(in);
 		playerScan.useDelimiter(",");
@@ -171,11 +174,11 @@ public class Board extends JPanel {
 			color = playerScan.next().trim();
 
 			if (type.equals("Human")) {
-				players[i] = new HumanPlayer(name, Integer.parseInt(row), Integer.parseInt(column) , convertColor(color));
+				players.add(new HumanPlayer(name, Integer.parseInt(row), Integer.parseInt(column) , convertColor(color)));
 			} else {
-				players[i] = new ComputerPlayer(name, Integer.valueOf(row), Integer.valueOf(column) , convertColor(color));
+				players.add(new ComputerPlayer(name, Integer.valueOf(row), Integer.valueOf(column) , convertColor(color)));
 			}
-			players[i].setCurrentCell(board[Integer.valueOf(row)][Integer.valueOf(column)]);
+			players.get(i).setCurrentCell(board[Integer.valueOf(row)][Integer.valueOf(column)]);
 			deck.add(new Card(name, CardType.PERSON));
 		}
 	}
@@ -366,14 +369,14 @@ public class Board extends JPanel {
 	}
 
 	public Card handleSuggestion(Solution suggestion, Player accuser) {
-		int indexOfAccuser = getIndexOfPlayer(players, accuser);
+		int indexOfAccuser = getIndexOfPlayer(accuser);
 		if(!canBeDisproved(suggestion, accuser))
 			return null;
-		for(int i = indexOfAccuser+1; i<players.length+indexOfAccuser; i++) {
-			if(players[i%players.length].equals(accuser)) {
+		for(int i = indexOfAccuser+1; i<players.size()+indexOfAccuser; i++) {
+			if(players.get(i%players.size()).equals(accuser)) {
 				continue;
-			} else if(players[i%players.length].disproveSuggestion(suggestion)!=null) {
-				return players[i%players.length].disproveSuggestion(suggestion);
+			} else if(players.get(i%players.size()).disproveSuggestion(suggestion)!=null) {
+				return players.get(i%players.size()).disproveSuggestion(suggestion);
 			}
 
 		}
@@ -451,13 +454,13 @@ public class Board extends JPanel {
 		return targets;
 	}
 
-	public Player[] getPlayers() {
+	public ArrayList<Player> getPlayers() {
 		return players;
 	}
 
 	public Player getPlayer(int p) {
-		if (players[p].isHuman()) return (HumanPlayer) players[p];
-		else return (ComputerPlayer) players[p];
+		if (players.get(p).isHuman()) return (HumanPlayer) players.get(p);
+		else return (ComputerPlayer) players.get(p);
 	}
 
 	public ArrayList<Card> getDeck() {
@@ -473,9 +476,9 @@ public class Board extends JPanel {
 		return allCards;
 	}
 
-	public int getIndexOfPlayer(Player[] players, Player p) {
-		for(int i=0; i<players.length; i++) {
-			if(p.equals(players[i])) {
+	public int getIndexOfPlayer(Player p) {
+		for(int i=0; i<players.size(); i++) {
+			if(p.equals(players.get(i))) {
 				return i;
 			}
 		}
@@ -490,6 +493,13 @@ public class Board extends JPanel {
 			}
 		}
 		return false;
+	}
+	
+	public void removeHumanPlayer() {
+		for (Player p : players) {
+			if (p.isHuman())
+				players.remove(p);
+		}
 	}
 
 }
