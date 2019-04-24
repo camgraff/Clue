@@ -143,6 +143,7 @@ public class ClueGame extends JFrame {
 		return buttonPanel;
 	}
 
+	//creates ui for player to make an accusation
 	public void createAccusationDialog() {
 		hasGuessed = false;
 		accusationDialog = new JDialog(this, "Make an Accusation");
@@ -438,7 +439,7 @@ public class ClueGame extends JFrame {
 		 */
 
 	}
-
+	
 	public void doHumanPlayerTurn() {
 		canMakeAccusation = true;
 
@@ -501,6 +502,7 @@ public class ClueGame extends JFrame {
 		canMakeAccusation = false;
 	}
 
+	//creates ui for human player to make a suggestion
 	public void createGuessDialog(Player currentPlayer) {
 		hasGuessed = false;
 		guessDialog = new JDialog(this, "Make a Guess");
@@ -549,6 +551,7 @@ public class ClueGame extends JFrame {
 		}
 	}
 
+	//starts gameplay 
 	public void playGame() {
 		if (hasWon) {
 			JOptionPane.showMessageDialog(this, "Congratulaions, you won!","You Win!", JOptionPane.INFORMATION_MESSAGE);
