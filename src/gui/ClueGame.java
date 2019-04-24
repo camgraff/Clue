@@ -219,7 +219,7 @@ public class ClueGame extends JFrame {
 
 		//splash screen
 		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(0).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-
+	
 	}
 
 	//board panel contains board and human player's card display
@@ -382,6 +382,7 @@ public class ClueGame extends JFrame {
 					Solution guess = ((ComputerPlayer)currentPlayer).createSuggestion(board.getAllCards(), board.getBoard(), board.getLegend());
 					if (((ComputerPlayer)currentPlayer).getCanMakeAccusation()) {
 						((ComputerPlayer)currentPlayer).makeAccusation(guess.getPerson().getName(), guess.getRoom().getName(), guess.getWeapon().getName());
+						hasWon = true;
 					}
 					guessTextField.setText(guess.toString());
 					Card disproveCard = board.handleSuggestion(guess, currentPlayer);
@@ -550,6 +551,7 @@ public class ClueGame extends JFrame {
 			}
 		}
 	}
+	
 
 	//starts gameplay 
 	public void playGame() {
