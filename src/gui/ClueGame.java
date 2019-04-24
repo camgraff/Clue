@@ -473,6 +473,7 @@ public class ClueGame extends JFrame {
 							bcell.setIsHumanTarget(false);
 						}
 						repaint();
+						board.hasMoved = true;
 						return;
 					}
 			
