@@ -383,6 +383,7 @@ public class ClueGame extends JFrame {
 					if (((ComputerPlayer)currentPlayer).getCanMakeAccusation()) {
 						((ComputerPlayer)currentPlayer).makeAccusation(guess.getPerson().getName(), guess.getRoom().getName(), guess.getWeapon().getName());
 						hasWon = true;
+						JOptionPane.showMessageDialog(this, currentPlayer.getName() + " has won with the accusation:\n" + guess.toString(),"Game Over, you lose", JOptionPane.INFORMATION_MESSAGE);
 					}
 					guessTextField.setText(guess.toString());
 					Card disproveCard = board.handleSuggestion(guess, currentPlayer);
