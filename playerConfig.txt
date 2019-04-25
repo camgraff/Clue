@@ -1,4 +1,4 @@
-Computer, Miss Scarlett, 9, 0, red,
+Human, Miss Scarlett, 9, 0, red,
 Computer, Professor Plum, 0, 3, purple,
 Computer, Mrs. Peacock, 0, 12, blue,
 Computer, Mr. Green, 7, 23, green,

@@ -45,15 +45,21 @@ public class ComputerPlayer extends Player {
 	public Solution createSuggestion(ArrayList<Card> allCards, BoardCell[][] board, Map< Character, String> legend) {
 		ArrayList<Card> possiblePersons = new ArrayList<Card>();
 		ArrayList<Card> possibleWeapons = new ArrayList<Card>();
+		ArrayList<Card> possibleRooms = new ArrayList<Card>();
 		for (Card crd : allCards) {
-			if (!seenCards.contains(crd) && crd.getType()==CardType.PERSON) 
+			if (!seenCards.contains(crd) && !hand.contains(crd) && crd.getType()==CardType.PERSON) 
 				possiblePersons.add(crd);
-			if (!seenCards.contains(crd) && crd.getType()==CardType.WEAPON) 
+			if (!seenCards.contains(crd) && !hand.contains(crd) && crd.getType()==CardType.WEAPON) 
 				possibleWeapons.add(crd);
+			if (!seenCards.contains(crd) && !hand.contains(crd) && crd.getType()==CardType.ROOM) 
+				possibleRooms.add(crd);
 		}
 		//choose random person card and weapon card for suggestion
 		int randomPerson = new Random().nextInt(possiblePersons.size());
 		int randomWeapon = new Random().nextInt(possibleWeapons.size());
+		int randomRoom = new Random().nextInt(possibleRooms.size());
+		if (canMakeAccusation)
+			return new Solution(possiblePersons.get(randomPerson), possibleRooms.get(randomRoom), possibleWeapons.get(randomWeapon));
 		return new Solution(possiblePersons.get(randomPerson), new Card(legend.get(board[getRow()][getColumn()].getInitial()), CardType.ROOM), possibleWeapons.get(randomWeapon));
 	}
 
@@ -69,6 +75,10 @@ public class ComputerPlayer extends Player {
 
 	public void addSeenCards(Card crd) {
 		seenCards.add(crd);
+	}
+	
+	public Set<Card> getSeenCards() {
+		return seenCards;
 	}
 
 	public boolean getCanMakeAccusation() {

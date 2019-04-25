@@ -14,7 +14,7 @@ public class Player {
 	private int row;
 	private int column;
 	private Color color;
-	private ArrayList<Card> hand = new ArrayList<Card>();
+	protected ArrayList<Card> hand = new ArrayList<Card>();
 	private BoardCell currentCell;
 
 	public Player() {}

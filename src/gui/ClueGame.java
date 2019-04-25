@@ -219,7 +219,7 @@ public class ClueGame extends JFrame {
 
 		//splash screen
 		JOptionPane.showMessageDialog(this, "You are " + board.getPlayer(0).getName() + ", press Next Player to begin play","Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-	
+
 	}
 
 	//board panel contains board and human player's card display
@@ -397,10 +397,13 @@ public class ClueGame extends JFrame {
 							((ComputerPlayer)player).addSeenCards(disproveCard);
 						}
 					}
-					if (disproveCard == null && ((ComputerPlayer)currentPlayer).handContainsCurrentRoom(board.getLegend())) {
-
-						((ComputerPlayer)currentPlayer).setCanMakeAccusation();
+					int numUnseenCards = 0;
+					for (Card crd : board.getAllCards()) {
+						if (!((ComputerPlayer)currentPlayer).getSeenCards().contains(crd) && !currentPlayer.getHand().contains(crd))
+							numUnseenCards++;
 					}
+					if (numUnseenCards == 3)
+						((ComputerPlayer)currentPlayer).setCanMakeAccusation();
 				}
 			}
 
@@ -441,7 +444,7 @@ public class ClueGame extends JFrame {
 		 */
 
 	}
-	
+
 	public void doHumanPlayerTurn() {
 		canMakeAccusation = true;
 
@@ -479,7 +482,7 @@ public class ClueGame extends JFrame {
 						board.hasMoved = true;
 						return;
 					}
-			
+
 				}
 				if ( nextPlayer.getModel().isPressed()) {
 					JOptionPane.showMessageDialog(this, "Please select a square to move to.","Error", JOptionPane.INFORMATION_MESSAGE);
@@ -552,7 +555,7 @@ public class ClueGame extends JFrame {
 			}
 		}
 	}
-	
+
 
 	//starts gameplay 
 	public void playGame() {

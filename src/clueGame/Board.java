@@ -38,7 +38,7 @@ public class Board extends JPanel {
 	private Set<BoardCell> visited;
 	private ArrayList<Player> players;
 	private ArrayList<Card> deck;
-	private static Solution solution;
+	private Solution solution;
 	private ArrayList<Card> allCards;
 	public BoardCell humanTargetCell;
 	public boolean hasMoved = true;
