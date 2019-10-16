@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,7 +153,7 @@ public class Board extends JPanel {
 
 	//loads weapons into deck
 	public void loadWeaponConfig() throws FileNotFoundException {
-		FileReader in = new FileReader("weaponConfig.txt");
+		InputStream in = getClass().getResourceAsStream("/weaponConfig.txt");
 		Scanner weaponScan = new Scanner(in);
 		while(weaponScan.hasNextLine()) {
 			deck.add(new Card(weaponScan.nextLine(), CardType.WEAPON));
@@ -162,7 +163,7 @@ public class Board extends JPanel {
 	//loads players into the board and deck
 	public void loadPlayerConfig() throws FileNotFoundException {
 		players = new ArrayList<Player>();
-		FileReader in = new FileReader("playerConfig.txt");
+		InputStream in = getClass().getResourceAsStream("/playerConfig.txt");
 		Scanner playerScan = new Scanner(in);
 		playerScan.useDelimiter(",");
 		for (int i = 0; i < 6; i++) {
@@ -188,7 +189,7 @@ public class Board extends JPanel {
 		numRows = 1;
 		numColumns = 1;
 		//calculates number of rows and columns
-		FileReader in = new FileReader(boardConfigFile);
+		InputStream in = getClass().getResourceAsStream(boardConfigFile); 
 		Scanner countRowCols = new Scanner(in);
 		for (char c : countRowCols.nextLine().toCharArray()) {
 			if (c == ',') {
@@ -201,7 +202,7 @@ public class Board extends JPanel {
 		}
 
 		//makes sure all rows have the same number of columns, otherwise throws exception
-		in = new FileReader(boardConfigFile);
+		in = getClass().getResourceAsStream(boardConfigFile); 
 		Scanner sameNumCols = new Scanner(in);
 		while(sameNumCols.hasNextLine()) {
 			int cols = 1;
@@ -217,7 +218,7 @@ public class Board extends JPanel {
 
 		//loads cells into board
 		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];
-		in = new FileReader(boardConfigFile);
+		in = getClass().getResourceAsStream(boardConfigFile); 
 		Scanner reader = new Scanner(in);
 		for (int row = 0; row < numRows; row++) {
 			String nextRow = reader.nextLine();
@@ -266,7 +267,7 @@ public class Board extends JPanel {
 	//sets up legend with initial, name of each room. Adds rooms to deck
 	public void loadRoomConfig() throws FileNotFoundException, BadConfigFormatException {
 		legend = new HashMap<Character, String>();
-		FileReader reader = new FileReader(roomConfigFile);
+		InputStream reader = getClass().getResourceAsStream(roomConfigFile); 
 		Scanner in = new Scanner(reader);
 		while(in.hasNextLine()) {
 			String roomName = in.next();

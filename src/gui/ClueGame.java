@@ -224,7 +224,7 @@ public class ClueGame extends JFrame {
 
 	//board panel contains board and human player's card display
 	public void createBoardPanel() {
-		board.setConfigFiles("rooms.csv", "legend.txt");
+		board.setConfigFiles("/Rooms.csv", "/legend.txt");
 		board.initialize();
 		board.dealCards();
 		board.setSize(100,100);
